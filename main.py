@@ -8,7 +8,6 @@ import config as c
 import pygame as pg
 import ground
 import sys
-import math
 
 
 def next():  # updates frame
@@ -21,29 +20,36 @@ def draw():
     ground.group.draw(c.screen)
 
 
-while True:
+def keys():
     x = 0
     y = 0
+    keys = pg.key.get_pressed()
+    if keys[pg.K_w]:
+        y += 1
+    if keys[pg.K_s]:
+        y -= 1
+    if keys[pg.K_a]:
+        x += 1
+    if keys[pg.K_d]:
+        x -= 1
+    if x != 0 and y != 0:
+        print(c.DIAG_SPEED)
+        c.pos[0] += x * c.DIAG_SPEED
+        c.pos[1] += y * c.DIAG_SPEED
+    else:
+        c.pos[0] += x * c.SPEED
+        c.pos[1] += y * c.SPEED
+
+
+ground.make()
+c.pos[0] += 1
+while True:
     for event in pg.event.get():
-        if event.type == pg.K_w:
-            y -= c.SPEED
-        if event.type == pg.K_s:
-            y += c.SPEED
-        if event.type == pg.K_a:
-            x -= c.SPEED
-        if event.type == pg.K_d:
-            x -= c.SPEED
         if event.type == pg.QUIT:
             pg.quit()
             sys.exit()
             exit(0)
-    if x != 0 and y != 0:
-        pos[0] += x*math.sqrt(2)
-        pos[1] += y*math.sqrt(2)
-    else:
-        pos[0] += x
-        pos[1] += y
-
+    keys()
     ground.move()
     draw()
     next()
