@@ -8,6 +8,8 @@ import config as c
 import pygame as pg
 import sys
 
+pos = 0
+
 def next(): # updates frame
 	pg.display.update()
 	for event in pg.event.get():
