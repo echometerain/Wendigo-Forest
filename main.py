@@ -9,15 +9,20 @@ import pygame as pg
 import ground
 import sys
 
+view = pg.image.load("sprites/mid.png").convert_alpha()
+view = pg.transform.scale(view, (c.WIDTH, c.HEIGHT))
+ground.make()
+
 
 def next():  # updates frame
     pg.display.update()
     pg.event.clear()
-    c.clock.tick(60)
+    c.clock.tick(100)
 
 
 def draw():
     ground.group.draw(c.screen)
+    c.screen.blit(view, (0, 0))
 
 
 def keys():
@@ -33,7 +38,6 @@ def keys():
     if keys[pg.K_d]:
         x -= 1
     if x != 0 and y != 0:
-        print(c.DIAG_SPEED)
         c.pos[0] += x * c.DIAG_SPEED
         c.pos[1] += y * c.DIAG_SPEED
     else:
@@ -41,8 +45,6 @@ def keys():
         c.pos[1] += y * c.SPEED
 
 
-ground.make()
-c.pos[0] += 1
 while True:
     for event in pg.event.get():
         if event.type == pg.QUIT:
