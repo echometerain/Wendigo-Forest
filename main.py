@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 ############################
 # Filename: sacrilege.py
 # Desc: Main game loop

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 ############################
 # Filename: config.py
 # Desc: Configuration
