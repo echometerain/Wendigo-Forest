@@ -8,7 +8,8 @@ import pygame as pg
 import ground
 import sys
 
-view = pg.image.load("sprites/mid.png").convert_alpha()
+view = pg.image.load("sprites/mid2.png").convert_alpha()
+print("hi")
 view = pg.transform.scale(view, (c.WIDTH, c.HEIGHT))
 ground.make()
 
