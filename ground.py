@@ -1,3 +1,8 @@
+############################
+# Filename: ground.py
+# Desc: Generate ground tiles
+# Date created: 05/15/2022
+############################
 import pygame as pg
 import config as c
 
@@ -11,7 +16,7 @@ class Ground(pg.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
 
-        self.image = pg.image.load("sprites/ground2.png").convert()
+        self.image = pg.image.load("sprites/ground_gray.png").convert()
         self.image = pg.transform.scale(self.image, (SIZE, SIZE))
         self.rect = self.image.get_rect(bottomright=(x, y))
 

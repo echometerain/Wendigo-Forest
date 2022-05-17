@@ -25,5 +25,13 @@ pg.event.set_allowed([pg.KEYDOWN, pg.KEYUP, pg.QUIT, pg.USEREVENT])
 clock = pg.time.Clock()
 
 pos = [0, 0]
+offset = [0, 0]
 SPEED = 6
 DIAG_SPEED = int(SPEED/math.sqrt(2))
+
+
+def image(file):
+    img = pg.image.load(f"sprites/{file}.png").convert_alpha()
+    img = pg.transform.scale(
+        img, (img.get_width()*IN_RATIO, img.get_height()*IN_RATIO))
+    return img
