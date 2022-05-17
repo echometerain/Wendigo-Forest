@@ -8,9 +8,8 @@ import pygame as pg
 import ground
 import sys
 
-view = pg.image.load("sprites/mid2.png").convert_alpha()
-print("hi")
-view = pg.transform.scale(view, (c.WIDTH, c.HEIGHT))
+black = c.image("black")
+mask = c.image("mask")
 ground.make()
 
 
@@ -22,7 +21,8 @@ def next():  # updates frame
 
 def draw():
     ground.group.draw(c.screen)
-    c.screen.blit(view, (0, 0))
+    c.screen.blit(mask, (0, 0))
+    c.screen.blit(black, (0, 0))
 
 
 def keys():
