@@ -8,17 +8,18 @@ import config as c
 
 
 def get_state():
-    if c.pl_state[0] == 1:
-        if c.pl_state[1] == 1:
-
-    else:
-        if c.pl_state[1] == 1:
+    return pl_state[0]*5+pl_state[2]
 
 
 class Player(pg.sprite.Sprite):
     def __init__(self, x, y):
         super.__init__()
-        self.image = c.image(f"pl_{}")
+        self.spritesheet = pygame.image.load(
+            "sprites/player.png").convert_alpha()
+        self.rect = self.spritesheet.get_rect()
+        self.sheetWidth = self.rect.width
+        self.numImages = numImages
+        self.rect.width = self.sheetWidth//numImages
 
     def update(self):
         self.image = c.image

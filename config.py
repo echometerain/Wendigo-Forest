@@ -28,7 +28,7 @@ pos = [0, 0]
 relpos = [0, 0]
 offset = [0, 0]
 SPEED = 6
-pl_state = [1, 0, 0]  # facing x, facing y, running frame
+pl_state = [1, False, 4]  # turn #, flip, running frame (4 is idle)
 DIAG_SPEED = int(SPEED/math.sqrt(2))
 
 

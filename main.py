@@ -28,14 +28,20 @@ def keys():
     y = 0
     move_vector = [0, 0]
     keys = pg.key.get_pressed()
+    lr = 0  # left -1 right 1 none 0
+    du = 0  # down -1 up 1 none 0
     if keys[pg.K_w]:
         y += 1
+        du += 1
     if keys[pg.K_s]:
         y -= 1
+        du -= 1
     if keys[pg.K_a]:
         x += 1
+        lr += 1
     if keys[pg.K_d]:
         x -= 1
+        lr -= 1
     if x != 0 and y != 0:
         move_vector[0] = x * c.DIAG_SPEED
         move_vector[1] = y * c.DIAG_SPEED
