@@ -39,3 +39,7 @@ def move():
     for i in range(cur_pos[0]+SIZE, c.WIDTH, SIZE):
         for j in range(cur_pos[1], c.WIDTH, SIZE):
             tiles[(i-cur_pos[0]) // SIZE][(j-cur_pos[1]) // SIZE].move_to(i, j)
+
+
+def draw():
+    group.draw(c.screen)

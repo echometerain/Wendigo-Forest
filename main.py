@@ -28,30 +28,40 @@ def keys():
     y = 0
     move_vector = [0, 0]
     keys = pg.key.get_pressed()
-    lr = 0  # left -1 right 1 none 0
-    du = 0  # down -1 up 1 none 0
     if keys[pg.K_w]:
         y += 1
-        du += 1
     if keys[pg.K_s]:
         y -= 1
-        du -= 1
     if keys[pg.K_a]:
         x += 1
-        lr += 1
     if keys[pg.K_d]:
         x -= 1
-        lr -= 1
     if x != 0 and y != 0:
+        if x == -1:
+            c.pl_state[1] = True
+        if y == 1:
+            c.pl_state[0] = 2
+        else:
+            c.pl_state[0] = 4
         move_vector[0] = x * c.DIAG_SPEED
         move_vector[1] = y * c.DIAG_SPEED
     else:
+        if x == 1:
+            c.pl_state[0] = 3
+        elif x == -1:
+            c.pl_state[1] = True
+            c.pl_state[0] = 3
+        elif y == 1:
+            c.pl_state[0] = 0
+        else:
+            c.pl_state[0] = 1
         move_vector[0] = x * c.SPEED
         move_vector[1] = y * c.SPEED
 
 
 def draw():
-    ground.group.draw(c.screen)
+    ground.draw()
+    player.draw()
     c.screen.blit(mask, (0, 0))
     c.screen.blit(black, (0, 0))
 
@@ -66,3 +76,4 @@ while True:
     ground.move()
     draw()
     next()
+    player.upd()
