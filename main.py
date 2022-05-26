@@ -15,6 +15,7 @@ import sys
 black = c.image("black")
 mask = c.image("mask")
 ground.make()
+move_count = 0
 
 
 def next():  # updates frame
@@ -40,16 +41,17 @@ def keys():
         if x == -1:
             c.pl_state[1] = True
         if y == 1:
-            c.pl_state[0] = 2
-        else:
             c.pl_state[0] = 4
+        else:
+            c.pl_state[0] = 2
         move_vector[0] = x * c.DIAG_SPEED
         move_vector[1] = y * c.DIAG_SPEED
     else:
         if x == 1:
+            c.pl_state[1] = True
             c.pl_state[0] = 3
         elif x == -1:
-            c.pl_state[1] = True
+            c.pl_state[1] = False
             c.pl_state[0] = 3
         elif y == 1:
             c.pl_state[0] = 0
@@ -57,6 +59,8 @@ def keys():
             c.pl_state[0] = 1
         move_vector[0] = x * c.SPEED
         move_vector[1] = y * c.SPEED
+    c.pos[0] += move_vector[0]
+    c.pos[1] += move_vector[1]
 
 
 def draw():
@@ -76,4 +80,7 @@ while True:
     ground.move()
     draw()
     next()
-    player.upd()
+    move_count += 1
+    if move_count >= 10:
+        move_count = 0
+        player.upd()
