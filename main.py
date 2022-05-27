@@ -1,5 +1,5 @@
 ############################
-# Filename: sacrilege.py
+# Filename: main.py
 # Desc: Main game loop
 # Date created: 04/22/2022
 ############################
@@ -22,6 +22,11 @@ def next():  # updates frame
     pg.display.update()
     pg.event.clear()
     c.clock.tick(100)
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
+            pg.quit()
+            sys.exit()
+            exit(0)
 
 
 def keys():
@@ -34,9 +39,10 @@ def keys():
     if keys[pg.K_s]:
         y -= 1
     if keys[pg.K_a]:
-        x += 1
-    if keys[pg.K_d]:
         x -= 1
+    if keys[pg.K_d]:
+        x += 1
+
     if x != 0 and y != 0:
         if x == -1:
             c.pl_state[1] = True
@@ -61,6 +67,7 @@ def keys():
         move_vector[1] = y * c.SPEED
     c.pos[0] += move_vector[0]
     c.pos[1] += move_vector[1]
+    print(c.pos)
 
 
 def draw():
@@ -71,16 +78,11 @@ def draw():
 
 
 while True:
-    for event in pg.event.get():
-        if event.type == pg.QUIT:
-            pg.quit()
-            sys.exit()
-            exit(0)
-    keys()
-    ground.move()
-    draw()
-    next()
     move_count += 1
     if move_count >= 10:
         move_count = 0
         player.upd()
+    keys()
+    ground.move()
+    draw()
+    next()

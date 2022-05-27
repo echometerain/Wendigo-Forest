@@ -24,7 +24,7 @@ class Ground(pg.sprite.Sprite):
         self.rect = self.image.get_rect(bottomright=(x, y))
 
 
-def make():
+def make():  # makes the tiles
     for i in range(cur_pos[0], c.WIDTH, SIZE):
         tiles.append([])
         for j in range(cur_pos[1], c.WIDTH, SIZE):
@@ -33,13 +33,13 @@ def make():
             tiles[len(tiles) - 1].append(tmp_ground)
 
 
-def move():
-    cur_pos[0] = c.pos[0] % SIZE
+def move():  # moves the tiles
+    cur_pos[0] = -c.pos[0] % SIZE  # how the f*ck does this work
     cur_pos[1] = c.pos[1] % SIZE
     for i in range(cur_pos[0]+SIZE, c.WIDTH, SIZE):
         for j in range(cur_pos[1], c.WIDTH, SIZE):
             tiles[(i-cur_pos[0]) // SIZE][(j-cur_pos[1]) // SIZE].move_to(i, j)
 
 
-def draw():
+def draw():  # draws all the ground tiles
     group.draw(c.screen)
