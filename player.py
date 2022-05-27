@@ -20,6 +20,7 @@ class Player(pg.sprite.Sprite):
         self.numImages = 25
         self.rect.width = self.sheetWidth//self.numImages
         self.update()
+        self.re_position()
 
     def update(self):
         self.spritesheet.set_clip(
@@ -27,10 +28,13 @@ class Player(pg.sprite.Sprite):
         self.image = self.spritesheet.subsurface(self.spritesheet.get_clip())
         if c.pl_state[1]:
             self.image = pg.transform.flip(self.image, True, False)
-        self.rect = self.image.get_rect(center=(c.WIDTH//2, c.HEIGHT//2))
         if c.pl_state[2] < 0:
             c.pl_state[2] = 3
         c.pl_state[2] -= 1
+
+    def re_position(self):
+        self.rect = self.image.get_rect(
+            center=(c.WIDTH//2+c.offset[0], c.HEIGHT//2+c.offset[1]))
 
 
 pl = Player()

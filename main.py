@@ -16,6 +16,7 @@ black = c.image("black")
 mask = c.image("mask")
 ground.make()
 move_count = 0
+moving = False
 
 
 def next():  # updates frame
@@ -29,7 +30,13 @@ def next():  # updates frame
             exit(0)
 
 
+def in_radius(x, y, r):
+    return x*x + y*y <= r*r
+
+
 def keys():
+    global move_count
+    global moving
     x = 0
     y = 0
     move_vector = [0, 0]
@@ -42,10 +49,18 @@ def keys():
         x -= 1
     if keys[pg.K_d]:
         x += 1
-
+    if x == 0 and y == 0:
+        moving = False
+        c.pl_state[2] = 3
+        return
+    elif moving == False:
+        moving = True
+        move_count = 10
     if x != 0 and y != 0:
         if x == -1:
             c.pl_state[1] = True
+        elif x == 1:
+            c.pl_state[1] = False
         if y == 1:
             c.pl_state[0] = 4
         else:
@@ -54,10 +69,10 @@ def keys():
         move_vector[1] = y * c.DIAG_SPEED
     else:
         if x == 1:
-            c.pl_state[1] = True
+            c.pl_state[1] = False
             c.pl_state[0] = 3
         elif x == -1:
-            c.pl_state[1] = False
+            c.pl_state[1] = True
             c.pl_state[0] = 3
         elif y == 1:
             c.pl_state[0] = 0
@@ -65,9 +80,13 @@ def keys():
             c.pl_state[0] = 1
         move_vector[0] = x * c.SPEED
         move_vector[1] = y * c.SPEED
-    c.pos[0] += move_vector[0]
-    c.pos[1] += move_vector[1]
-    print(c.pos)
+    if in_radius(c.offset[0]-move_vector[0], c.offset[1]-move_vector[1], c.OFFSET_RAD):
+        c.offset[0] -= move_vector[0]
+        c.offset[1] -= move_vector[1]
+        player.pl.re_position()
+    else:
+        c.pos[0] += move_vector[0]
+        c.pos[1] += move_vector[1]
 
 
 def draw():

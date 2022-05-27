@@ -25,7 +25,8 @@ pg.event.set_allowed([pg.KEYDOWN, pg.KEYUP, pg.QUIT, pg.USEREVENT])
 clock = pg.time.Clock()
 
 pos = [0, 0]
-pl_pos = [0, 0]
+offset = [0, 0]
+OFFSET_RAD = 40
 SPEED = 6
 pl_state = [1, False, 4]  # turn #, flip, running frame (4 is idle)
 DIAG_SPEED = int(SPEED/math.sqrt(2))

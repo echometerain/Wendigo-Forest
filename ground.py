@@ -34,7 +34,7 @@ def make():  # makes the tiles
 
 
 def move():  # moves the tiles
-    cur_pos[0] = -c.pos[0] % SIZE  # how the f*ck does this work
+    cur_pos[0] = SIZE - c.pos[0] % SIZE  # how the hell does this work
     cur_pos[1] = c.pos[1] % SIZE
     for i in range(cur_pos[0]+SIZE, c.WIDTH, SIZE):
         for j in range(cur_pos[1], c.WIDTH, SIZE):
