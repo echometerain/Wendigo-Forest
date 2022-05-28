@@ -29,7 +29,7 @@ class Player(pg.sprite.Sprite):
         if c.pl_state[1]:
             self.image = pg.transform.flip(self.image, True, False)
         if c.pl_state[2] < 0:
-            c.pl_state[2] = 3
+            c.pl_state[2] = 4
         c.pl_state[2] -= 1
 
     def re_position(self):

@@ -26,7 +26,7 @@ clock = pg.time.Clock()
 
 pos = [0, 0]
 offset = [0, 0]
-OFFSET_RAD = 40
+OFFSET_RAD = 100
 SPEED = 6
 pl_state = [1, False, 4]  # turn #, flip, running frame (4 is idle)
 DIAG_SPEED = int(SPEED/math.sqrt(2))

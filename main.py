@@ -40,7 +40,7 @@ def keys():
     x = 0
     y = 0
     move_vector = [0, 0]
-    keys = pg.key.get_pressed()
+    keys = pg.key.get_pressed()  # x is always inverted for some reason
     if keys[pg.K_w]:
         y += 1
     if keys[pg.K_s]:
@@ -56,32 +56,33 @@ def keys():
     elif moving == False:
         moving = True
         move_count = 10
+        player.upd()
     if x != 0 and y != 0:
         if x == -1:
             c.pl_state[1] = True
         elif x == 1:
             c.pl_state[1] = False
         if y == 1:
-            c.pl_state[0] = 4
+            c.pl_state[0] = 1
         else:
-            c.pl_state[0] = 2
+            c.pl_state[0] = 3
         move_vector[0] = x * c.DIAG_SPEED
         move_vector[1] = y * c.DIAG_SPEED
     else:
         if x == 1:
             c.pl_state[1] = False
-            c.pl_state[0] = 3
+            c.pl_state[0] = 2
         elif x == -1:
             c.pl_state[1] = True
-            c.pl_state[0] = 3
+            c.pl_state[0] = 2
         elif y == 1:
             c.pl_state[0] = 0
         else:
-            c.pl_state[0] = 1
+            c.pl_state[0] = 4
         move_vector[0] = x * c.SPEED
         move_vector[1] = y * c.SPEED
-    if in_radius(c.offset[0]-move_vector[0], c.offset[1]-move_vector[1], c.OFFSET_RAD):
-        c.offset[0] -= move_vector[0]
+    if in_radius(c.offset[0]+move_vector[0], c.offset[1]-move_vector[1], c.OFFSET_RAD):
+        c.offset[0] += move_vector[0]
         c.offset[1] -= move_vector[1]
         player.pl.re_position()
     else:
