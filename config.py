@@ -28,12 +28,41 @@ pos = [0, 0]
 offset = [0, 0]
 OFFSET_RAD = 100
 SPEED = 6
-pl_state = [1, False, 4]  # turn #, flip, running frame (4 is idle)
+pl_state = [4, False, 3]  # turn #, flip, running frame (4 is idle)
 DIAG_SPEED = int(SPEED/math.sqrt(2))
 
 
-def image(file):
+def image(file):  # makes loading images with alpha
     img = pg.image.load(f"sprites/{file}.png").convert_alpha()
     img = pg.transform.scale(
         img, (img.get_width()*IN_RATIO, img.get_height()*IN_RATIO))
     return img
+
+
+def move_anim(x, y, speed, diag_speed, anim_state):
+    move = [0, 0]
+    if x != 0 and y != 0:
+        if x == -1:
+            anim_state[1] = True
+        elif x == 1:
+            anim_state[1] = False
+        if y == 1:
+            anim_state[0] = 1
+        else:
+            anim_state[0] = 3
+        move[0] = x * diag_speed
+        move[1] = y * diag_speed
+    else:
+        if x == 1:
+            anim_state[1] = False
+            anim_state[0] = 2
+        elif x == -1:
+            anim_state[1] = True
+            anim_state[0] = 2
+        elif y == 1:
+            anim_state[0] = 0
+        else:
+            anim_state[0] = 4
+        move[0] = x * speed
+        move[1] = y * speed
+    return move, anim_state

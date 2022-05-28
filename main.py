@@ -57,30 +57,8 @@ def keys():
         moving = True
         move_count = 10
         player.upd()
-    if x != 0 and y != 0:
-        if x == -1:
-            c.pl_state[1] = True
-        elif x == 1:
-            c.pl_state[1] = False
-        if y == 1:
-            c.pl_state[0] = 1
-        else:
-            c.pl_state[0] = 3
-        move_vector[0] = x * c.DIAG_SPEED
-        move_vector[1] = y * c.DIAG_SPEED
-    else:
-        if x == 1:
-            c.pl_state[1] = False
-            c.pl_state[0] = 2
-        elif x == -1:
-            c.pl_state[1] = True
-            c.pl_state[0] = 2
-        elif y == 1:
-            c.pl_state[0] = 0
-        else:
-            c.pl_state[0] = 4
-        move_vector[0] = x * c.SPEED
-        move_vector[1] = y * c.SPEED
+    move_vector, c.pl_state = c.move_anim(
+        x, y, c.SPEED, c.DIAG_SPEED, c.pl_state)
     if in_radius(c.offset[0]+move_vector[0], c.offset[1]-move_vector[1], c.OFFSET_RAD):
         c.offset[0] += move_vector[0]
         c.offset[1] -= move_vector[1]
