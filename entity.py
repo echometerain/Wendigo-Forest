@@ -38,13 +38,13 @@ class Entity(pg.sprite.Sprite):
         self.image = self.spritesheet.subsurface(self.spritesheet.get_clip())
         if self.anim_state[1]:
             self.image = pg.transform.flip(self.image, True, False)
+        self.anim_state[2] -= 1
         if self.anim_state[2] < 0:
             self.anim_state[2] = 4
-        self.anim_state[2] -= 1
 
     def re_position(self):
         self.rect = self.image.get_rect(
-            center=(c.WIDTH//2+(c.cam_pos[0]-self.pos[0]), c.HEIGHT//2+(c.cam_pos[0]-self.pos[1])))
+            center=(c.WIDTH//2-(c.cam_pos[0]-self.pos[0]), c.HEIGHT//2+(c.cam_pos[0]-self.pos[1])))
 
     def move_anim(self, x, y):
         move = [0, 0]
@@ -67,8 +67,10 @@ class Entity(pg.sprite.Sprite):
                 self.anim_state[1] = True
                 self.anim_state[0] = 2
             elif y == 1:
+                self.anim_state[1] = False
                 self.anim_state[0] = 0
             else:
+                self.anim_state[1] = False
                 self.anim_state[0] = 4
             move[0] = x * self.speed
             move[1] = y * self.speed

@@ -12,9 +12,6 @@ class Player(entity.Entity):
     def __init__(self):
         super().__init__("player", 25, 5, c.PL_SPEED, [0, 0])
 
-    def in_radius(self):
-        return (self.pos[0] - c.cam_pos[0])**2 + (self.pos[0] - c.cam_pos[0])**2 <= c.OFFSET_RAD**2
-
     def move(self, x, y):
         move_vector = [0, 0]
         self.nomove_frames += 1
@@ -30,13 +27,16 @@ class Player(entity.Entity):
             self.nomove_frames = 10
             self.update()
         move_vector = self.move_anim(x, y)
+        # if (c.cam_pos[0]-self.pos[0]+move_vector[0])**2 + (c.cam_pos[1]-self.pos[1]-move_vector[1])**2 <= c.OFFSET_RAD**2:
+        #     self.pos[0] += move_vector[0]
+        #     self.pos[1] -= move_vector[1]
+        #     self.re_position()
         self.pos[0] += move_vector[0]
-        self.pos[1] -= move_vector[1]  # -= may be a problem
-        if not self.in_radius():
-            c.cam_pos[0] += move_vector[0]
-            c.cam_pos[1] -= move_vector[1]
-        else:
-            self.re_position()
+        self.pos[1] += move_vector[1]
+        self.re_position()
+        # c.cam_pos[0] += move_vector[0]
+        # c.cam_pos[1] += move_vector[1]
+        # print(f"{c.cam_pos}, {self.pos}")
 
 
 pl = Player()
