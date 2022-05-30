@@ -24,45 +24,20 @@ pg.event.set_allowed([pg.KEYDOWN, pg.KEYUP, pg.QUIT, pg.USEREVENT])
 
 clock = pg.time.Clock()
 
-pos = [0, 0]
-offset = [0, 0]
-OFFSET_RAD = 100
-SPEED = 6
-pl_state = [4, False, 3]  # turn #, flip, running frame (4 is idle)
-DIAG_SPEED = int(SPEED/math.sqrt(2))
+cam_pos = [0, 0]  # camera position
+OFFSET_RAD = 100  # how far can the player go off-center
+PL_SPEED = 6
 
 
-def image(file):  # makes loading images with alpha
+def image(file):  # loads images with alpha
     img = pg.image.load(f"sprites/{file}.png").convert_alpha()
     img = pg.transform.scale(
         img, (img.get_width()*IN_RATIO, img.get_height()*IN_RATIO))
     return img
 
 
-def move_anim(x, y, speed, diag_speed, anim_state):
-    move = [0, 0]
-    if x != 0 and y != 0:
-        if x == -1:
-            anim_state[1] = True
-        elif x == 1:
-            anim_state[1] = False
-        if y == 1:
-            anim_state[0] = 1
-        else:
-            anim_state[0] = 3
-        move[0] = x * diag_speed
-        move[1] = y * diag_speed
-    else:
-        if x == 1:
-            anim_state[1] = False
-            anim_state[0] = 2
-        elif x == -1:
-            anim_state[1] = True
-            anim_state[0] = 2
-        elif y == 1:
-            anim_state[0] = 0
-        else:
-            anim_state[0] = 4
-        move[0] = x * speed
-        move[1] = y * speed
-    return move, anim_state
+def image_no_alpha(file):  # loads images without alpha
+    img = pg.image.load(f"sprites/{file}.png")
+    img = pg.transform.scale(
+        img, (img.get_width()*IN_RATIO, img.get_height()*IN_RATIO))
+    return img
