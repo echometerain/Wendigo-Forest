@@ -21,6 +21,7 @@ class Player(entity.Entity):
         if x == 0 and y == 0:
             self.moving = False
             self.anim_state[2] = 3
+            self.update()
             return
         elif self.moving == False:
             self.moving = True
@@ -33,9 +34,9 @@ class Player(entity.Entity):
         #     self.re_position()
         self.pos[0] += move_vector[0]
         self.pos[1] += move_vector[1]
+        c.cam_pos[0] += move_vector[0]
+        c.cam_pos[1] += move_vector[1]
         self.re_position()
-        # c.cam_pos[0] += move_vector[0]
-        # c.cam_pos[1] += move_vector[1]
         # print(f"{c.cam_pos}, {self.pos}")
 
 
