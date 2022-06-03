@@ -8,13 +8,24 @@ class NPC(entity.Entity):
         super().__init__("npc", 25, 5, c.PL_SPEED, [0, 0])
         self.pos = [0, 0]
 
-    def check_move(pl):
-        # if (pl.pos[0]-self.pos[0])**2 \
-        #         + (pl.pos[0]-self.pos[1])**2 >= c.NPC_CLOSE_RAD**2:
-        #     x = 0
-        #     y = 0
-        #     if pl.pos[0]-self.pos[0] <=
-        pass
+    def check_move(self, pl):
+        if (pl.pos[0]-self.pos[0])**2 \
+                + (pl.pos[0]-self.pos[1])**2 >= c.NPC_CLOSE_RAD**2:
+            x = 0
+            y = 0
+            if pl.pos[0]-self.pos[0] < 0:
+                x = -1
+            elif pl.pos[0]-self.pos[0] > 0:
+                x = 1
+            else:
+                x = 0
+            if pl.pos[1]-self.pos[1] < 0:
+                y = -1
+            elif pl.pos[1]-self.pos[1] > 0:
+                y = 1
+            else:
+                y = 0
+            self. move(x, y)
 
     def move(self, x, y):
         if x == 0 and y == 0:
