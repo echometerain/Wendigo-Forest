@@ -28,6 +28,8 @@ cam_pos = [0, 0]  # camera position
 OFFSET_RAD = 100  # how far can the player go off-center
 PL_SPEED = 6
 
+nomove_frames = [0]
+
 
 def image(file):  # loads images with alpha
     img = pg.image.load(f"sprites/{file}.png").convert_alpha()

@@ -15,6 +15,9 @@ import sys
 black = c.image("black")
 mask = c.image("mask")
 ground.make()
+pl = player.Player()
+all_sprites = pg.sprite.Group()
+all_sprites.add(pl)
 
 
 def next():  # updates frame
@@ -40,17 +43,22 @@ def keys():
         x -= 1
     if keys[pg.K_d]:
         x += 1
-    player.pl.move(x, y)
+    pl.move(x, y)
 
 
 def draw():
     ground.draw()
-    player.draw()
+    all_sprites.draw(c.screen)
     c.screen.blit(mask, (0, 0))
     c.screen.blit(black, (0, 0))
 
 
 while True:
+    c.nomove_frames[0] += 1
+    if c.nomove_frames[0] >= 10:
+        c.nomove_frames[0] = 0
+        pl.update()
+
     keys()
     ground.move()
     draw()

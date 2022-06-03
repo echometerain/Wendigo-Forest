@@ -14,10 +14,6 @@ class Player(entity.Entity):
 
     def move(self, x, y):
         move_vector = [0, 0]
-        self.nomove_frames += 1
-        if self.nomove_frames >= 10:
-            self.nomove_frames = 0
-            self.update()
         if x == 0 and y == 0:
             self.moving = False
             self.anim_state[2] = 3
@@ -37,12 +33,3 @@ class Player(entity.Entity):
             c.cam_pos[0] += move_vector[0]
             c.cam_pos[1] += move_vector[1]
         self.re_position()
-
-
-pl = Player()
-group = pg.sprite.Group()
-group.add(pl)
-
-
-def draw():
-    group.draw(c.screen)
