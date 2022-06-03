@@ -28,16 +28,15 @@ class Player(entity.Entity):
             self.nomove_frames = 10
             self.update()
         move_vector = self.move_anim(x, y)
-        # if (c.cam_pos[0]-self.pos[0]+move_vector[0])**2 + (c.cam_pos[1]-self.pos[1]-move_vector[1])**2 <= c.OFFSET_RAD**2:
-        #     self.pos[0] += move_vector[0]
-        #     self.pos[1] -= move_vector[1]
-        #     self.re_position()
         self.pos[0] += move_vector[0]
         self.pos[1] += move_vector[1]
-        c.cam_pos[0] += move_vector[0]
-        c.cam_pos[1] += move_vector[1]
+        if (c.cam_pos[0]-self.pos[0]-move_vector[0])**2 \
+                + (c.cam_pos[1]-self.pos[1]-move_vector[1])**2 <= c.OFFSET_RAD**2:
+            self.re_position()
+        else:
+            c.cam_pos[0] += move_vector[0]
+            c.cam_pos[1] += move_vector[1]
         self.re_position()
-        # print(f"{c.cam_pos}, {self.pos}")
 
 
 pl = Player()
