@@ -16,8 +16,10 @@ black = c.image("black")
 mask = c.image("mask")
 ground.make()
 pl = player.Player()
+npc1 = npc.NPC()
 all_sprites = pg.sprite.Group()
 all_sprites.add(pl)
+all_sprites.add(npc1)
 
 
 def next():  # updates frame
@@ -49,6 +51,7 @@ def keys():
 def draw():
     ground.draw()
     all_sprites.draw(c.screen)
+    npc1.re_position()
     c.screen.blit(mask, (0, 0))
     c.screen.blit(black, (0, 0))
 
