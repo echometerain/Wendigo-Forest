@@ -5,34 +5,31 @@ import entity
 
 class NPC(entity.Entity):
     def __init__(self):
-        super().__init__("npc", 25, 5, c.PL_SPEED, [0, 0])
+        super().__init__("npc", 25, 5, c.NPC_SPEED, [0, 0])
         self.pos = [0, 0]
 
     def check_move(self, pl):
         if (pl.pos[0]-self.pos[0])**2 \
-                + (pl.pos[0]-self.pos[1])**2 >= c.NPC_CLOSE_RAD**2:
+                + (pl.pos[1]-self.pos[1])**2 >= c.NPC_CLOSE_RAD**2:
             x = 0
             y = 0
             if pl.pos[0]-self.pos[0] < 0:
                 x = -1
             elif pl.pos[0]-self.pos[0] > 0:
                 x = 1
-            else:
-                x = 0
             if pl.pos[1]-self.pos[1] < 0:
                 y = -1
             elif pl.pos[1]-self.pos[1] > 0:
                 y = 1
-            else:
-                y = 0
-            self. move(x, y)
-
-    def move(self, x, y):
-        if x == 0 and y == 0:
+            self.move(x, y)
+            self.re_position()
+        elif self.moving:
             self.moving = False
             self.anim_state[2] = 3
             self.update()
             return
+
+    def move(self, x, y):
         move_vector = self.move_anim(x, y)
         self.pos[0] += move_vector[0]
         self.pos[1] += move_vector[1]

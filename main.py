@@ -52,7 +52,6 @@ def draw():
     ground.draw()
     all_sprites.draw(c.screen)
     npc1.check_move(pl)
-    npc1.re_position()
     c.screen.blit(mask, (0, 0))
     c.screen.blit(black, (0, 0))
 
@@ -62,6 +61,7 @@ while True:
     if c.nomove_frames[0] >= 10:
         c.nomove_frames[0] = 0
         pl.update()
+        npc1.update()
 
     keys()
     ground.move()
