@@ -20,6 +20,8 @@ npc1 = npc.NPC()
 all_sprites = pg.sprite.Group()
 all_sprites.add(pl)
 all_sprites.add(npc1)
+font = pg.font.SysFont("Metal Macabre", 50)
+red = (255, 0, 0)
 
 
 def next():  # updates frame
@@ -31,6 +33,15 @@ def next():  # updates frame
             sys.exit()
             exit(0)
     pg.event.clear()
+
+
+img_title = c.image("logo")
+# c.screen, WIDTH, HEIGHT
+while True:
+    c.screen.blit(img_title, (c.WIDTH/4, c.HEIGHT/3))
+    msg = font.render("Press any key to start.. ", True, red)
+    c.screen.blit(msg, (0, 0))
+    next()
 
 
 def keys():
