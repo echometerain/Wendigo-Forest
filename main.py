@@ -22,6 +22,15 @@ all_sprites.add(pl)
 all_sprites.add(npc1)
 
 
+def set_text(string, coordx, coordy, fontSize):  # Function to set text
+
+    font = pg.font.SysFont("calibri", fontSize)
+    text = font.render(string, True, (255, 255, 255))
+    textRect = text.get_rect()
+    textRect.center = (coordx, coordy)
+    return (text, textRect)
+
+
 def next():  # updates frame
     pg.display.update()
     c.clock.tick(100)
@@ -54,6 +63,8 @@ def draw():
     npc1.check_move(pl)
     c.screen.blit(mask, (0, 0))
     c.screen.blit(black, (0, 0))
+    txt = set_text(pl.anim_state.__str__(), 100, 100, 25)
+    c.screen.blit(txt[0], txt[1])
 
 
 while True:
