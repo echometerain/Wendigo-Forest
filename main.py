@@ -24,6 +24,15 @@ font = pg.font.SysFont("Metal Macabre", 50)
 red = (255, 0, 0)
 
 
+def set_text(string, coordx, coordy, fontSize):  # Function to set text
+
+    font = pg.font.SysFont("calibri", fontSize)
+    text = font.render(string, True, (255, 255, 255))
+    textRect = text.get_rect()
+    textRect.center = (coordx, coordy)
+    return (text, textRect)
+
+
 def next():  # updates frame
     pg.display.update()
     c.clock.tick(100)
@@ -63,9 +72,10 @@ def draw():
     ground.draw()
     all_sprites.draw(c.screen)
     npc1.check_move(pl)
-    npc1.re_position()
     c.screen.blit(mask, (0, 0))
     c.screen.blit(black, (0, 0))
+    txt = set_text(pl.anim_state.__str__(), 100, 100, 25)
+    c.screen.blit(txt[0], txt[1])
 
 
 while True:
@@ -73,6 +83,7 @@ while True:
     if c.nomove_frames[0] >= 10:
         c.nomove_frames[0] = 0
         pl.update()
+        npc1.update()
 
     keys()
     ground.move()
