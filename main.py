@@ -20,8 +20,8 @@ npc1 = npc.NPC()
 all_sprites = pg.sprite.Group()
 all_sprites.add(pl)
 all_sprites.add(npc1)
-font = pg.font.SysFont("Metal Macabre", 50)
-red = (255, 0, 0)
+font = pg.font.Font("MetalMacabre.ttf", 50)
+maroon = (128, 0, 0)
 
 
 def set_text(string, coordx, coordy, fontSize):  # Function to set text
@@ -48,8 +48,8 @@ img_title = c.image("logo")
 # c.screen, WIDTH, HEIGHT
 while True:
     c.screen.blit(img_title, (c.WIDTH/4, c.HEIGHT/3))
-    msg = font.render("Press any key to start.. ", True, red)
-    c.screen.blit(msg, (0, 0))
+    msg = font.render("Press any key to start.. ", True, maroon)
+    c.screen.blit(msg, ((c.WIDTH/5)*2 - 50, (c.HEIGHT/3)*2))
     next()
 
 
