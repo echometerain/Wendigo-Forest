@@ -17,11 +17,8 @@ mask = c.image("mask")
 ground.make()
 pl = player.Player()
 npc1 = npc.NPC()
-all_sprites = pg.sprite.Group()
-all_sprites.add(pl)
-all_sprites.add(npc1)
-font = pg.font.Font("MetalMacabre.ttf", 50)
-maroon = (128, 0, 0)
+sprites = [pl, npc1]
+font = pg.font.SysFont("Metal Macabre", 50)
 
 
 def set_text(string, coordx, coordy, fontSize):  # Function to set text
@@ -56,7 +53,7 @@ while True:
 def keys():
     x = 0
     y = 0
-    keys = pg.key.get_pressed()  # x is always inverted for some reason
+    keys = pg.key.get_pressed()
     if keys[pg.K_w]:
         y += 1
     if keys[pg.K_s]:
@@ -70,11 +67,15 @@ def keys():
 
 def draw():
     ground.draw()
-    all_sprites.draw(c.screen)
+    sprites.sort(key=lambda x: x.pos[1], reverse=True)
+    queue = pg.sprite.OrderedUpdates()
+    for e in sprites:
+        queue.add(e)
+    queue.draw(c.screen)
     npc1.check_move(pl)
     c.screen.blit(mask, (0, 0))
     c.screen.blit(black, (0, 0))
-    txt = set_text(pl.anim_state.__str__(), 100, 100, 25)
+    txt = set_text(npc1.anim_state.__str__(), 100, 100, 25)
     c.screen.blit(txt[0], txt[1])
 
 
@@ -82,8 +83,8 @@ while True:
     c.nomove_frames[0] += 1
     if c.nomove_frames[0] >= 10:
         c.nomove_frames[0] = 0
-        pl.update()
         npc1.update()
+        pl.update()
 
     keys()
     ground.move()

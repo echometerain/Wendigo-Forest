@@ -48,10 +48,10 @@ class Entity(pg.sprite.Sprite):
 
     def move_anim(self, x, y):
         move = [0, 0]
-        if x != 0 and y != 0:
+        if (x != 0) and (y != 0):
             if x == -1:
                 self.anim_state[1] = True
-            elif x == 1:
+            else:
                 self.anim_state[1] = False
             if y == 1:
                 self.anim_state[0] = 1
@@ -60,12 +60,12 @@ class Entity(pg.sprite.Sprite):
             move[0] = x * self.diag_speed
             move[1] = y * self.diag_speed
         else:
-            if x == 1:
-                self.anim_state[1] = False
+            if x != 0:
                 self.anim_state[0] = 2
-            elif x == -1:
-                self.anim_state[1] = True
-                self.anim_state[0] = 2
+                if x == 1:
+                    self.anim_state[1] = False
+                else:
+                    self.anim_state[1] = True
             elif y == 1:
                 self.anim_state[1] = False
                 self.anim_state[0] = 0

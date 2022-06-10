@@ -13,6 +13,10 @@ class NPC(entity.Entity):
                 + (pl.pos[1]-self.pos[1])**2 >= c.NPC_CLOSE_RAD**2:
             x = 0
             y = 0
+            if abs(pl.pos[0]-self.pos[0]) < self.diag_speed:
+                self.pos[0] = pl.pos[0]
+            if abs(pl.pos[1]-self.pos[1]) < self.diag_speed:
+                self.pos[1] = pl.pos[1]
             if pl.pos[0]-self.pos[0] < 0:
                 x = -1
             elif pl.pos[0]-self.pos[0] > 0:
