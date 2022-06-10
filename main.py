@@ -42,13 +42,13 @@ def next():  # updates frame
     pg.event.clear()
 
 
-# img_title = c.image("logo")
-# # c.screen, WIDTH, HEIGHT
-# while True:
-#     c.screen.blit(img_title, (c.WIDTH/4, c.HEIGHT/3))
-#     msg = font.render("Press any key to start.. ", True, red)
-#     c.screen.blit(msg, (0, 0))
-#     next()
+img_title = c.image("logo")
+# c.screen, WIDTH, HEIGHT
+while True:
+    c.screen.blit(img_title, (c.WIDTH/4, c.HEIGHT/3))
+    msg = font.render("Press any key to start.. ", True, maroon)
+    c.screen.blit(msg, ((c.WIDTH/5)*2 - 50, (c.HEIGHT/3)*2))
+    next()
 
 
 def keys():
