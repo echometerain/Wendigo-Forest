@@ -18,7 +18,8 @@ ground.make()
 pl = player.Player()
 npc1 = npc.NPC()
 sprites = [pl, npc1]
-font = pg.font.SysFont("Metal Macabre", 50)
+font = pg.font.Font("MetalMacabre.ttf", 50)
+maroon = (128, 0, 0)
 
 
 def set_text(string, coordx, coordy, fontSize):  # Function to set text
@@ -41,13 +42,29 @@ def next():  # updates frame
     pg.event.clear()
 
 
+# def anyKey():  # press any key to continue
+#     pg.display.update()
+#     while True:
+#         for event in pg.event.get():
+#             if event.type == pg.KEYDOWN:
+#                 return
+#         next()
+
+
 img_title = c.image("logo")
 # c.screen, WIDTH, HEIGHT
 while True:
+    keys = pg.key.get_pressed()
+    # anyKey()
+    if keys[pg.K_SPACE]:
+        break
     c.screen.blit(img_title, (c.WIDTH/4, c.HEIGHT/3))
-    msg = font.render("Press any key to start.. ", True, maroon)
+    msg = font.render("Press space to start.. ", True, maroon)
     c.screen.blit(msg, ((c.WIDTH/5)*2 - 50, (c.HEIGHT/3)*2))
     next()
+
+
+# anyKey()
 
 
 def keys():
