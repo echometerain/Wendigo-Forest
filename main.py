@@ -43,6 +43,7 @@ def next():  # updates frame
     pg.event.clear()
 
 
+<<<<<<< Updated upstream
 # def anyKey():  # press any key to continue
 #     pg.display.update()
 #     while True:
@@ -63,6 +64,14 @@ while True:
     msg = font.render("Press space to start.. ", True, maroon)
     c.screen.blit(msg, ((c.WIDTH/5)*2 - 50, (c.HEIGHT/3)*2))
     next()
+=======
+# img_title = c.image("logo")
+# while True:
+#     c.screen.blit(img_title, (c.WIDTH/4, c.HEIGHT/3))
+#     msg = font.render("Press any key to start.. ", True, (128, 0, 0))
+#     c.screen.blit(msg, ((c.WIDTH/5)*2 - 50, (c.HEIGHT/3)*2))
+#     next()
+>>>>>>> Stashed changes
 
 
 # anyKey()
@@ -96,12 +105,12 @@ def draw():
         #     c.screen.blit(mask.overlap_mask(
         #         e.mask, offset).to_surface(), offset)
     queue.draw(c.screen)
-    for i, e in enumerate(npcs):
-        if not e.rect.collidelist(npcs[i:]):
-            e.check_move(pl)
-    if len(npcs) > 0:
-        txt = set_text(npcs[0].anim_state.__str__(), 100, 100, 25)
-        c.screen.blit(txt[0], txt[1])
+    # for i, e in enumerate(npcs):
+    #     if not e.rect.collidelist(npcs[i:]):
+    #         e.check_move(pl)
+    # if len(npcs) > 0:
+    #     txt = set_text(npcs[0].anim_state.__str__(), 100, 100, 25)
+    #     c.screen.blit(txt[0], txt[1])
 
     c.screen.blit(black, (0, 0))
 
