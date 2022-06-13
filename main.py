@@ -5,21 +5,22 @@
 ############################
 import config as c
 import pygame as pg
+import random
 import ground
 import player
 import wd
 import npc
-import obst
 import sys
 
 black = c.image("black")
-mask = c.image("mask")
+gray = c.image("mask")
 ground.make()
 pl = player.Player()
-npc1 = npc.NPC()
-sprites = [pl, npc1]
+sprites = [pl]
+npcs = []
 font = pg.font.Font("MetalMacabre.ttf", 50)
 maroon = (128, 0, 0)
+mask = pg.mask.from_surface(gray)
 
 
 def set_text(string, coordx, coordy, fontSize):  # Function to set text
@@ -83,24 +84,40 @@ def keys():
 
 
 def draw():
+    overlap = []
     ground.draw()
+    c.screen.blit(gray, (0, 0))
     sprites.sort(key=lambda x: x.pos[1], reverse=True)
     queue = pg.sprite.OrderedUpdates()
     for e in sprites:
         queue.add(e)
+        # offset = (e.pos[0] - c.cam_pos[0], e.pos[1] - c.cam_pos[1])
+        # if mask.overlap(e.mask, offset):
+        #     c.screen.blit(mask.overlap_mask(
+        #         e.mask, offset).to_surface(), offset)
     queue.draw(c.screen)
-    npc1.check_move(pl)
-    c.screen.blit(mask, (0, 0))
+    for i, e in enumerate(npcs):
+        if not e.rect.collidelist(npcs[i:]):
+            e.check_move(pl)
+    if len(npcs) > 0:
+        txt = set_text(npcs[0].anim_state.__str__(), 100, 100, 25)
+        c.screen.blit(txt[0], txt[1])
+
     c.screen.blit(black, (0, 0))
-    txt = set_text(npc1.anim_state.__str__(), 100, 100, 25)
-    c.screen.blit(txt[0], txt[1])
 
 
 while True:
     c.nomove_frames[0] += 1
     if c.nomove_frames[0] >= 10:
+        if random.randint(1, 20) == 1:
+            x = random.randint(-1, 1)
+            y = random.randint(-1, 1)
+            t = npc.NPC([x*1000+c.cam_pos[0], y*1000+c.cam_pos[1]])
+            npcs.append(t)
+            sprites.append(t)
         c.nomove_frames[0] = 0
-        npc1.update()
+        for e in npcs:
+            e.update()
         pl.update()
 
     keys()

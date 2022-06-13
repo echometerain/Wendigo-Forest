@@ -29,6 +29,7 @@ OFFSET_RAD = 100  # how far can the player go off-center
 NPC_CLOSE_RAD = 70
 PL_SPEED = 6
 NPC_SPEED = 5
+WD_SPEED = 10
 
 nomove_frames = [0]
 
