@@ -109,10 +109,9 @@ while True:
     c.nomove_frames[0] += 1
     if c.nomove_frames[0] >= 10:
         if random.randint(1, 20) == 1:
-            # x = random.randint(-1, 1)
-            # y = random.randint(-1, 1)
-            # t = npc.NPC([x*1000+c.cam_pos[0], y*1000+c.cam_pos[1]])
-            t = npc.NPC([0, 0])
+            x = random.randint(-1, 1)
+            y = random.randint(-1, 1)
+            t = npc.NPC([x*1000+c.cam_pos[0], y*1000+c.cam_pos[1]])
             npcs.append(t)
             sprites.append(t)
         c.nomove_frames[0] = 0
