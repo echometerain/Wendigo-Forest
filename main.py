@@ -16,8 +16,8 @@ black = c.image("black")
 mask = c.image("mask")
 ground.make()
 pl = player.Player()
-npc1 = npc.NPC()
-sprites = [pl, npc1]
+npcs = []
+sprites = [pl]
 font = pg.font.SysFont("Metal Macabre", 50)
 
 
@@ -41,13 +41,13 @@ def next():  # updates frame
     pg.event.clear()
 
 
-img_title = c.image("logo")
-# c.screen, WIDTH, HEIGHT
-while True:
-    c.screen.blit(img_title, (c.WIDTH/4, c.HEIGHT/3))
-    msg = font.render("Press any key to start.. ", True, maroon)
-    c.screen.blit(msg, ((c.WIDTH/5)*2 - 50, (c.HEIGHT/3)*2))
-    next()
+# img_title = c.image("logo")
+# # c.screen, WIDTH, HEIGHT
+# while True:
+#     c.screen.blit(img_title, (c.WIDTH/4, c.HEIGHT/3))
+#     msg = font.render("Press any key to start.. ", True, (128, 0, 0))
+#     c.screen.blit(msg, ((c.WIDTH/5)*2 - 50, (c.HEIGHT/3)*2))
+#     next()
 
 
 def keys():
@@ -72,18 +72,18 @@ def draw():
     for e in sprites:
         queue.add(e)
     queue.draw(c.screen)
-    npc1.check_move(pl)
+    for e in npcs:
+        e.check_move(pl)
     c.screen.blit(mask, (0, 0))
     c.screen.blit(black, (0, 0))
-    txt = set_text(npc1.anim_state.__str__(), 100, 100, 25)
-    c.screen.blit(txt[0], txt[1])
 
 
 while True:
     c.nomove_frames[0] += 1
     if c.nomove_frames[0] >= 10:
         c.nomove_frames[0] = 0
-        npc1.update()
+        for e in npcs:
+            e.update
         pl.update()
 
     keys()
