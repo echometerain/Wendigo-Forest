@@ -41,7 +41,7 @@ class Entity(pg.sprite.Sprite):
         if self.anim_state[2] < 0:
             self.anim_state[2] = 4
         self.anim_state[2] -= 1
-        self.mask = pg.mask.from_surface(self.image)
+        # self.mask = pg.mask.from_surface(self.image)
 
     def re_position(self):
         self.rect = self.image.get_rect(

@@ -42,30 +42,6 @@ def next():  # updates frame
             exit(0)
     pg.event.clear()
 
-# def anyKey():  # press any key to continue
-#     pg.display.update()
-#     while True:
-#         for event in pg.event.get():
-#             if event.type == pg.KEYDOWN:
-#                 return
-#         next()
-
-
-# img_title = c.image("logo")
-# # c.screen, WIDTH, HEIGHT
-# while True:
-#     keys = pg.key.get_pressed()
-#     # anyKey()
-#     if keys[pg.K_SPACE]:
-#         break
-#     c.screen.blit(img_title, (c.WIDTH/4, c.HEIGHT/3))
-#     msg = font.render("Press space to start.. ", True, maroon)
-#     c.screen.blit(msg, ((c.WIDTH/5)*2 - 50, (c.HEIGHT/3)*2))
-#     next()
-
-
-# anyKey()
-
 
 def keys():
     x = 0
@@ -95,9 +71,9 @@ def draw():
         #     c.screen.blit(mask.overlap_mask(
         #         e.mask, offset).to_surface(), offset)
     queue.draw(c.screen)
-    for e in npcs:
-        #     if not e.rect.collidelist(npcs[i:]):
-        e.check_move(pl)
+    for i, e in enumerate(npcs):
+        if not e.rect.collidelist(npcs[i:]):
+            e.check_move(pl)
     # if len(npcs) > 0:
     #     txt = set_text(npcs[0].anim_state.__str__(), 100, 100, 25)
     #     c.screen.blit(txt[0], txt[1])
@@ -108,10 +84,16 @@ def draw():
 while True:
     c.nomove_frames[0] += 1
     if c.nomove_frames[0] >= 10:
-        if random.randint(1, 20) == 1:
+        if random.randint(1, 30) == 1:
             x = random.randint(-1, 1)
             y = random.randint(-1, 1)
             t = npc.NPC([x*1000+c.cam_pos[0], y*1000+c.cam_pos[1]])
+            npcs.append(t)
+            sprites.append(t)
+        if random.randint(1, 35) == 1:
+            x = random.randint(-1, 1)
+            y = random.randint(-1, 1)
+            t = wd.Wendigo([x*1000+c.cam_pos[0], y*1000+c.cam_pos[1]])
             npcs.append(t)
             sprites.append(t)
         c.nomove_frames[0] = 0
