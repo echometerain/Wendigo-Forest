@@ -17,6 +17,7 @@ class Entity(pg.sprite.Sprite):
 
     def __init__(self, sheet, numImages, dir_images, speed, pos):
         super().__init__()
+        self.pos = pos
         self.spritesheet = c.image(sheet)
         self.rect = self.spritesheet.get_rect()
         self.sheetWidth = self.rect.width

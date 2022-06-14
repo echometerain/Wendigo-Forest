@@ -5,8 +5,7 @@ import entity
 
 class NPC(entity.Entity):
     def __init__(self, pos):
-        super().__init__("npc", 25, 5, c.NPC_SPEED, [0, 0])
-        self.pos = pos
+        super().__init__("npc", 25, 5, c.NPC_SPEED, pos)
 
     def check_move(self, pl):
         if (pl.pos[0]-self.pos[0])**2 \
