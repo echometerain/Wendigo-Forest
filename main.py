@@ -20,13 +20,13 @@ sprites = [pl]
 npcs = []
 font = pg.font.Font("MetalMacabre.ttf", 50)
 maroon = (128, 0, 0)
+openSFX = pg.mixer.Sound("sounds\music\opening.mp3")
+openSFX.set_volume(0.5)
 mask = pg.mask.from_surface(gray)
 
 
-def set_text(string, coordx, coordy, fontSize):  # Function to set text
-
-    font = pg.font.SysFont("calibri", fontSize)
-    text = font.render(string, True, (255, 255, 255))
+def set_text(font, string, coordx, coordy):  # Function to set text
+    text = font.render(string, True, maroon)
     textRect = text.get_rect()
     textRect.center = (coordx, coordy)
     return (text, textRect)
@@ -42,7 +42,6 @@ def next():  # updates frame
             exit(0)
     pg.event.clear()
 
-
 # def anyKey():  # press any key to continue
 #     pg.display.update()
 #     while True:
@@ -56,12 +55,16 @@ img_title = c.image("logo")
 # c.screen, WIDTH, HEIGHT
 while True:
     keys = pg.key.get_pressed()
+    openSFX.play(0)
     # anyKey()
     if keys[pg.K_SPACE]:
         break
     c.screen.blit(img_title, (c.WIDTH/4, c.HEIGHT/3))
-    msg = font.render("Press space to start.. ", True, maroon)
-    c.screen.blit(msg, ((c.WIDTH/5)*2 - 50, (c.HEIGHT/3)*2))
+    # msg = font.render("Press space to start.. ", True, maroon)
+    # c.screen.blit(msg, (c.WIDTH, c.HEIGHT))
+    txt = set_text(font, "Press space to start.. ",
+                   c.WIDTH/2 + 50, c.HEIGHT/2 + 200)
+    c.screen.blit(txt[0], txt[1])
     next()
 
 
@@ -99,9 +102,9 @@ def draw():
     for i, e in enumerate(npcs):
         if not e.rect.collidelist(npcs[i:]):
             e.check_move(pl)
-    if len(npcs) > 0:
-        txt = set_text(npcs[0].anim_state.__str__(), 100, 100, 25)
-        c.screen.blit(txt[0], txt[1])
+    # if len(npcs) > 0:
+    #     txt = set_text("calibri", npcs[0].anim_state.__str__(), 100, 100, 25)
+    #     c.screen.blit(txt[0], txt[1])
 
     c.screen.blit(black, (0, 0))
 
