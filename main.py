@@ -91,7 +91,7 @@ def draw():
                 if e in npcs:
                     npcs.remove(e)
                 if w in wendigos:
-                    w.remove(w)
+                    wendigos.remove(w)
         if w.rect.colliderect(pl.rect):
             return True
     # if len(npcs) > 0:
@@ -132,7 +132,7 @@ def main():
 
 
 def end():
-    print("here")
+    True
 
 
 while True:
