@@ -86,9 +86,12 @@ def draw():
             if w.rect.colliderect(e):
                 if w in sprites:
                     sprites.remove(w)
-                sprites.remove(e)
-                npcs.remove(e)
-                wendigos.remove(w)
+                if e in sprites:
+                    sprites.remove(e)
+                if e in npcs:
+                    npcs.remove(e)
+                if w in wendigos:
+                    w.remove(w)
         if w.rect.colliderect(pl.rect):
             return True
     # if len(npcs) > 0:
