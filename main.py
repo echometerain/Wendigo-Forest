@@ -18,6 +18,7 @@ ground.make()
 pl = player.Player()
 sprites = [pl]
 npcs = []
+wendigos = []
 font = pg.font.Font("MetalMacabre.ttf", 50)
 maroon = (128, 0, 0)
 openSFX = pg.mixer.Sound("sounds\music\opening.mp3")
@@ -100,30 +101,68 @@ def draw():
         #         e.mask, offset).to_surface(), offset)
     queue.draw(c.screen)
     for i, e in enumerate(npcs):
-        if not e.rect.collidelist(npcs[i:]):
-            e.check_move(pl)
+        # move = True
+        # for e2 in npcs[i:]:
+        #     if e.rect.colliderect(e2.rect):
+        #         move = False
+        # if move:
+        e.check_move(pl)
+
+    for w in wendigos:
+        w.check_move(pl)
+        for e in npcs:
+            if w.rect.colliderect(e):
+                if w in sprites:
+                    sprites.remove(w)
+                if e in sprites:
+                    sprites.remove(e)
+                if e in npcs:
+                    npcs.remove(e)
+                if w in wendigos:
+                    wendigos.remove(w)
+        if w.rect.colliderect(pl.rect):
+            return True
     # if len(npcs) > 0:
-    #     txt = set_text("calibri", npcs[0].anim_state.__str__(), 100, 100, 25)
+    #     txt = set_text(npcs[0].anim_state.__str__(), 100, 100, 25)
     #     c.screen.blit(txt[0], txt[1])
 
     c.screen.blit(black, (0, 0))
+    return False
+
+
+def main():
+    while True:
+        c.nomove_frames[0] += 1
+        if c.nomove_frames[0] >= 10:
+            if random.randint(1, 30) == 1:
+                x = random.randint(-1, 1)
+                y = random.randint(-1, 1)
+                t = npc.NPC([x*1000+c.cam_pos[0], y*1000+c.cam_pos[1]])
+                npcs.append(t)
+                sprites.append(t)
+            if random.randint(1, 35) == 1:
+                x = random.randint(-1, 1)
+                y = random.randint(-1, 1)
+                t = wd.Wendigo([x*1000+c.cam_pos[0], y*1000+c.cam_pos[1]])
+                sprites.append(t)
+                wendigos.append(t)
+            c.nomove_frames[0] = 0
+            for e in npcs:
+                e.update()
+            pl.update()
+
+        keys()
+        ground.move()
+        ended = draw()
+        if ended:
+            break
+        next()
+
+
+def end():
+    True
 
 
 while True:
-    c.nomove_frames[0] += 1
-    if c.nomove_frames[0] >= 10:
-        if random.randint(1, 20) == 1:
-            x = random.randint(-1, 1)
-            y = random.randint(-1, 1)
-            t = npc.NPC([x*1000+c.cam_pos[0], y*1000+c.cam_pos[1]])
-            npcs.append(t)
-            sprites.append(t)
-        c.nomove_frames[0] = 0
-        for e in npcs:
-            e.update()
-        pl.update()
-
-    keys()
-    ground.move()
-    draw()
-    next()
+    main()
+    end()

@@ -5,7 +5,7 @@ import entity
 
 class Wendigo(entity.Entity):
     def __init__(self, pos):
-        super().__init__("wendigo", 5, 1, c.WD_SPEED, pos)
+        super().__init__("wendigo", 25, 5, c.WD_SPEED, pos)
 
     def check_move(self, pl):
         x = 0

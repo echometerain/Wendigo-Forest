@@ -17,6 +17,7 @@ class Entity(pg.sprite.Sprite):
 
     def __init__(self, sheet, numImages, dir_images, speed, pos):
         super().__init__()
+        self.pos = pos
         self.spritesheet = c.image(sheet)
         self.rect = self.spritesheet.get_rect()
         self.sheetWidth = self.rect.width
@@ -41,7 +42,7 @@ class Entity(pg.sprite.Sprite):
         if self.anim_state[2] < 0:
             self.anim_state[2] = 4
         self.anim_state[2] -= 1
-        self.mask = pg.mask.from_surface(self.image)
+        # self.mask = pg.mask.from_surface(self.image)
 
     def re_position(self):
         self.rect = self.image.get_rect(
