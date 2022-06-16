@@ -4,6 +4,8 @@ import entity
 
 
 class Wendigo(entity.Entity):
+    run = False
+
     def __init__(self, pos):
         super().__init__("wendigo", 25, 5, c.WD_SPEED, pos)
 
@@ -22,7 +24,10 @@ class Wendigo(entity.Entity):
             y = -1
         elif pl.pos[1]-self.pos[1] > 0:
             y = 1
-        self.move(x, y)
+        if self.run:
+            self.move(-x, -y)
+        else:
+            self.move(x, y)
         self.re_position()
 
     def move(self, x, y):

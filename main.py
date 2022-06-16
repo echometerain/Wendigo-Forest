@@ -5,6 +5,7 @@
 ############################
 import config as c
 import pygame as pg
+import os
 import random
 import ground
 import player
@@ -12,7 +13,10 @@ import wd
 import npc
 import sys
 
+pg.mouse.set_visible(False)
 black = c.image("black")
+cursor = c.image("crosshair")
+cursor_rect = cursor.get_rect()
 gray = c.image("mask")
 ground.make()
 pl = player.Player()
@@ -21,7 +25,8 @@ npcs = []
 wendigos = []
 font = pg.font.Font("MetalMacabre.ttf", 50)
 maroon = (128, 0, 0)
-openSFX = pg.mixer.Sound("sounds\music\opening.mp3")
+s = os.sep
+openSFX = pg.mixer.Sound(f"sounds{s}music{s}opening.mp3")
 openSFX.set_volume(0.5)
 mask = pg.mask.from_surface(gray)
 
@@ -43,33 +48,22 @@ def next():  # updates frame
             exit(0)
     pg.event.clear()
 
-# def anyKey():  # press any key to continue
-#     pg.display.update()
-#     while True:
-#         for event in pg.event.get():
-#             if event.type == pg.KEYDOWN:
-#                 return
-#         next()
-
 
 img_title = c.image("logo")
-# c.screen, WIDTH, HEIGHT
 while True:
     keys = pg.key.get_pressed()
     openSFX.play(0)
-    # anyKey()
     if keys[pg.K_SPACE]:
         break
     c.screen.blit(img_title, (c.WIDTH/4, c.HEIGHT/3))
-    # msg = font.render("Press space to start.. ", True, maroon)
-    # c.screen.blit(msg, (c.WIDTH, c.HEIGHT))
     txt = set_text(font, "Press space to start.. ",
                    c.WIDTH/2 + 50, c.HEIGHT/2 + 200)
     c.screen.blit(txt[0], txt[1])
     next()
 
 
-# anyKey()
+def gun():
+    True
 
 
 def keys():
@@ -86,6 +80,24 @@ def keys():
         x += 1
     pl.move(x, y)
 
+    for event in pygame.event.get():
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            gun()
+
+
+def rmWd(w):
+    if w in sprites:
+        sprites.remove(w)
+    if w in wendigos:
+        wendigos.remove(w)
+
+
+def rmNPC(e):
+    if e in sprites:
+        sprites.remove(e)
+    if e in npcs:
+        npcs.remove(e)
+
 
 def draw():
     overlap = []
@@ -95,31 +107,17 @@ def draw():
     queue = pg.sprite.OrderedUpdates()
     for e in sprites:
         queue.add(e)
-        # offset = (e.pos[0] - c.cam_pos[0], e.pos[1] - c.cam_pos[1])
-        # if mask.overlap(e.mask, offset):
-        #     c.screen.blit(mask.overlap_mask(
-        #         e.mask, offset).to_surface(), offset)
     queue.draw(c.screen)
     for i, e in enumerate(npcs):
-        # move = True
-        # for e2 in npcs[i:]:
-        #     if e.rect.colliderect(e2.rect):
-        #         move = False
-        # if move:
         e.check_move(pl)
 
     for w in wendigos:
         w.check_move(pl)
         for e in npcs:
             if w.rect.colliderect(e):
-                if w in sprites:
-                    sprites.remove(w)
-                if e in sprites:
-                    sprites.remove(e)
-                if e in npcs:
-                    npcs.remove(e)
-                if w in wendigos:
-                    wendigos.remove(w)
+                rmNPC(e)
+                # rmWd(w)
+                wd.run = True
         if w.rect.colliderect(pl.rect):
             return True
     # if len(npcs) > 0:
@@ -127,6 +125,8 @@ def draw():
     #     c.screen.blit(txt[0], txt[1])
 
     c.screen.blit(black, (0, 0))
+    cursor_rect.center = pg.mouse.get_pos()
+    c.screen.blit(cursor, cursor_rect)
     return False
 
 
@@ -160,9 +160,30 @@ def main():
 
 
 def end():
-    True
+    c.screen.fill((0, 0, 0))
+    while True:
+        keys = pg.key.get_pressed()
+        openSFX.play(0)
+        # anyKey()
+        if keys[pg.K_SPACE]:
+            break
+
+        c.screen.blit(img_title, (c.WIDTH/4+25, c.HEIGHT/3))
+        txt = set_text(font, "You died",
+                       c.WIDTH/2 + 50, c.HEIGHT/2 + 200)
+        c.screen.blit(txt[0], txt[1])
+        txt = set_text(font, "Press space to continue",
+                       c.WIDTH/2 + 50, c.HEIGHT/2 + 260)
+        c.screen.blit(txt[0], txt[1])
+        next()
 
 
 while True:
     main()
+    sprites = [pl]
+    c.cam_pos[0] = 0
+    c.cam_pos[1] = 0
+    npcs = []
+    wendigos = []
+    pl.pos = [0, 0]
     end()
