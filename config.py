@@ -10,6 +10,7 @@ pg.init()  # starts pygame and functions
 pg.mixer.pre_init(44100, 16, 2, 4096)
 pg.mixer.init()
 pg.font.init()
+pg.mouse.set_visible(False)
 
 screen = pg.display.set_mode(
     (0, 0), pg.HWSURFACE | pg.FULLSCREEN | pg.DOUBLEBUF, 16)
@@ -20,7 +21,8 @@ IN_RATIO = WIDTH / IN_WIDTH
 # pg.display.set_icon(pg.image.load("sprites/icon.png").convert_alpha())
 pg.display.set_caption("Wendigo Forest")
 
-pg.event.set_allowed([pg.KEYDOWN, pg.KEYUP, pg.QUIT, pg.USEREVENT])
+pg.event.set_allowed([pg.KEYDOWN, pg.KEYUP, pg.QUIT,
+                     pg.USEREVENT, pg.MOUSEBUTTONDOWN])
 
 clock = pg.time.Clock()
 
@@ -30,6 +32,7 @@ NPC_CLOSE_RAD = 70
 PL_SPEED = 6
 NPC_SPEED = 5
 WD_SPEED = 8
+GUN_SPEED = 12
 
 nomove_frames = [0]
 

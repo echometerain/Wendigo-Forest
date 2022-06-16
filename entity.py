@@ -8,6 +8,7 @@ import config as c
 
 
 class Entity(pg.sprite.Sprite):
+    rm = False
     moving = False
     dir_images = 0  # images per direction
     anim_state = [4, False, 3]  # turn #, flip, running frame (4 is idle)
