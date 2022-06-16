@@ -23,6 +23,8 @@ pl = player.Player()
 sprites = [pl]
 npcs = []
 wendigos = []
+remains = []
+bullets = []
 font = pg.font.Font("MetalMacabre.ttf", 50)
 maroon = (128, 0, 0)
 black = (0, 0, 0)
@@ -63,8 +65,22 @@ while True:
     next()
 
 
+def rmWd(w):
+    if w in sprites:
+        sprites.remove(w)
+    if w in wendigos:
+        wendigos.remove(w)
+
+
+def rmNPC(e):
+    if e in sprites:
+        sprites.remove(e)
+    if e in npcs:
+        npcs.remove(e)
+
+
 def gun():
-    True
+    bullets.append([pl.pos, ])
 
 
 def keys():
@@ -84,20 +100,6 @@ def keys():
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
             gun()
-
-
-def rmWd(w):
-    if w in sprites:
-        sprites.remove(w)
-    if w in wendigos:
-        wendigos.remove(w)
-
-
-def rmNPC(e):
-    if e in sprites:
-        sprites.remove(e)
-    if e in npcs:
-        npcs.remove(e)
 
 
 def draw():
