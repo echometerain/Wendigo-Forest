@@ -21,6 +21,7 @@ npcs = []
 wendigos = []
 font = pg.font.Font("MetalMacabre.ttf", 50)
 maroon = (128, 0, 0)
+black = (0, 0, 0)
 openSFX = pg.mixer.Sound("sounds\music\opening.mp3")
 openSFX.set_volume(0.5)
 mask = pg.mask.from_surface(gray)
