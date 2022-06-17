@@ -9,6 +9,7 @@ import config as c
 
 class Entity(pg.sprite.Sprite):
     rm = False
+    hitbox: pg.Rect
     moving = False
     dir_images = 0  # images per direction
     anim_state = [4, False, 3]  # turn #, flip, running frame (4 is idle)
@@ -16,9 +17,11 @@ class Entity(pg.sprite.Sprite):
     speed = 0
     diag_speed = 0  # diagonal speed
 
-    def __init__(self, sheet, numImages, dir_images, speed, pos):
+    def __init__(self, sheet, numImages, dir_images, speed, pos, hitbox_w, hitbox_h):
         super().__init__()
         self.pos = pos
+        self.hitbox = self.hitbox.center = (
+            self.rect.center[0], self.rect.center[1])
         self.spritesheet = c.image(sheet)
         self.rect = self.spritesheet.get_rect()
         self.sheetWidth = self.rect.width
