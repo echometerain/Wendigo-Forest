@@ -24,5 +24,9 @@ class Gun():
         ]
 
     def move(self):
+        # a function which would apply the movement vector
+        # onto the bullet's position and calls re_position
 
     def re_position(self):
+        # a function which would convert the game position
+        # of the bullet to its relative position on the screen
