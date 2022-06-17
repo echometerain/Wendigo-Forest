@@ -23,17 +23,17 @@ class Gun():
             (rel_mouse_pos[1]/len_vector)*c.GUN_SPEED
         ]
 
-    def move(self):
-        # a function which would apply the movement vector
-        # onto the bullet's position and calls re_position
-        self.pos[0] += self.vector[0]
-        self.pos[1] += self.vector[1]
+    def move(self):  # apply the movement vector onto the bullet's position
+        self.pos[0] += self.vector[0]  # x coordinate
+        self.pos[1] += self.vector[1]  # y coordinate
         if self.pos[0] > c.WIDTH//2 or self.pos[0] < -c.WIDTH//2 \
                 or self.pos[1] > c.HEIGHT//2 or self.pos[1] < -c.HEIGHT//2:
             self.rm = True
-        self.re_position()
+        self.re_position()  # call re_position
 
     def re_position(self):
+        self.screen_pos[0] = self.pos[0] - c.cam_pos[0] + c.WIDTH//2
+        self.screen_pos[1] = self.pos[1] - c.cam_pos[1] + c.HEIGHT//2
         # a function which would convert the game position
         # of the bullet to its relative position on the screen
         self.screen_pos = [
