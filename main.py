@@ -8,6 +8,7 @@ import pygame as pg
 import time
 import os
 import sys
+import remains
 import random
 import ground
 import player
@@ -24,7 +25,7 @@ pl = player.Player()
 sprites = [pl]
 npcs = []
 wendigos = []
-remains = []
+carnage = []
 bullets = []
 font = pg.font.Font("MetalMacabre.ttf", 50)
 cali = pg.font.SysFont("calibri", 50)
@@ -47,11 +48,10 @@ def next():  # updates frame
     global gun_time
     pg.display.update()
     c.clock.tick(c.FPS)
+    temp_time = time.time()
     for event in pg.event.get():
-        temp_time = time.time()
-        if (event.type == pg.MOUSEBUTTONDOWN or event.type == pg.MOUSEBUTTONUP) \
-                and temp_time-gun_time > 1:
-            gun_time = temp_time
+        if event.type == pg.MOUSEBUTTONDOWN:
+            #gun_time = temp_time
             bullets.append(gun.Gun(pl.pos[0], pl.pos[1]))
         if event.type == pg.QUIT:
             pg.quit()
@@ -63,6 +63,7 @@ def next():  # updates frame
 img_title = c.image("logo2")
 pg.mixer.music.play(-1)
 while True:
+
     keys = pg.key.get_pressed()
     if keys[pg.K_SPACE]:
         break
@@ -94,14 +95,18 @@ def logic():
     global wendigos
     global npcs
     ground.move()
+    for e in carnage:
+        e.re_position()
     for e in bullets:
         e.move()
         for n in npcs:
-            if n.rect.collidepoint(e.screen_pos[0], e.screen_pos[1]):
+            if n.hitbox.collidepoint(e.screen_pos[0], e.screen_pos[1]):
+                carnage.append(remains.Remains(n.pos[0], n.pos[1], "npc"))
                 e.rm = True
                 n.rm = True
         for w in wendigos:
-            if w.rect.collidepoint(e.screen_pos[0], e.screen_pos[1]):
+            if w.hitbox.collidepoint(e.screen_pos[0], e.screen_pos[1]):
+                carnage.append(remains.Remains(w.pos[0], w.pos[1], "wd"))
                 e.rm = True
                 w.rm = True
     for i, e in enumerate(npcs):
@@ -110,10 +115,10 @@ def logic():
     for w in wendigos:
         w.check_move(pl)
         for e in npcs:
-            if w.rect.colliderect(e):
+            if w.hitbox.colliderect(e.hitbox):
                 e.rm = True
                 w.run = True
-        if w.rect.colliderect(pl.rect):
+        if w.hitbox.colliderect(pl.hitbox):
             return True
 
     bullets = [x for x in bullets if not x.rm]
@@ -129,16 +134,18 @@ def draw():
     global wendigos
     global npcs
     ground.draw()
+    for e in carnage:
+        c.screen.blit(e.image, e.rect)
     c.screen.blit(gray, (0, 0))
     sprites.sort(key=lambda x: x.pos[1], reverse=True)
     ysort = pg.sprite.OrderedUpdates()
     for e in sprites:
         ysort.add(e)
+        # pg.draw.rect(c.screen, (255, 0, 0), e.hitbox)
     ysort.draw(c.screen)
     for e in bullets:
         pg.draw.line(c.screen, (255, 255, 0), (e.screen_pos[0], e.screen_pos[1]),
                      (e.screen_pos[0]+e.vector[0], e.screen_pos[1]-e.vector[1]))
-    pg.draw.rect(c.screen, (255, 0, 0), pl.hitbox)
     c.screen.blit(black, (0, 0))
     cursor_rect.center = pg.mouse.get_pos()
     c.screen.blit(cursor, cursor_rect)
@@ -167,8 +174,10 @@ def spawn():
 
 def main():
     while True:
+
         c.nomove_frames[0] += 1
         if c.nomove_frames[0] >= 5:
+            print(len(bullets))
             spawn()
             for e in npcs:
                 e.update()
@@ -207,6 +216,7 @@ while True:
     c.cam_pos[1] = 0
     npcs = []
     wendigos = []
+    carnage = []
     pl.pos[0] = 0
     pl.pos[1] = 0
     pl.re_position()

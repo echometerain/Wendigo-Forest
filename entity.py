@@ -20,8 +20,7 @@ class Entity(pg.sprite.Sprite):
     def __init__(self, sheet, numImages, dir_images, speed, pos, hitbox_w, hitbox_h):
         super().__init__()
         self.pos = pos
-        self.hitbox = self.hitbox.center = (
-            self.rect.center[0], self.rect.center[1])
+        self.hitbox = pg.Rect(0, 0, hitbox_w, hitbox_h)
         self.spritesheet = c.image(sheet)
         self.rect = self.spritesheet.get_rect()
         self.sheetWidth = self.rect.width
@@ -51,6 +50,7 @@ class Entity(pg.sprite.Sprite):
     def re_position(self):
         self.rect = self.image.get_rect(
             center=(c.WIDTH//2-(c.cam_pos[0]-self.pos[0]), c.HEIGHT//2+(c.cam_pos[1]-self.pos[1])))
+        self.hitbox.center = (self.rect.center[0], self.rect.center[1])
 
     def move_anim(self, x, y):
         move = [0, 0]

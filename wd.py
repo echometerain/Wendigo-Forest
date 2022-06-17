@@ -7,7 +7,7 @@ class Wendigo(entity.Entity):
     run = False
 
     def __init__(self, pos):
-        super().__init__("wendigo", 25, 5, c.WD_SPEED, pos)
+        super().__init__("wendigo", 25, 5, c.WD_SPEED, pos, 125, 50)
 
     def check_move(self, pl):
         x = 0

@@ -21,8 +21,7 @@ IN_RATIO = WIDTH / IN_WIDTH
 # pg.display.set_icon(pg.image.load("sprites/icon.png").convert_alpha())
 pg.display.set_caption("Wendigo Forest")
 
-pg.event.set_allowed([pg.KEYDOWN, pg.KEYUP, pg.QUIT,
-                     pg.USEREVENT, pg.MOUSEBUTTONDOWN])
+# pg.event.set_allowed([pg.KEYDOWN, pg.KEYUP, pg.QUIT, pg.USEREVENT, pg.MOUSEBUTTONDOWN])
 
 clock = pg.time.Clock()
 
