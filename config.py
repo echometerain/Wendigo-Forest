@@ -26,13 +26,14 @@ pg.event.set_allowed([pg.KEYDOWN, pg.KEYUP, pg.QUIT,
 
 clock = pg.time.Clock()
 
+FPS = 50
 cam_pos = [0, 0]  # camera position
 OFFSET_RAD = 100  # how far can the player go off-center
 NPC_CLOSE_RAD = 70
-PL_SPEED = 6
-NPC_SPEED = 5
-WD_SPEED = 8
-GUN_SPEED = 12
+PL_SPEED = 12
+NPC_SPEED = 10
+WD_SPEED = 14
+GUN_SPEED = 24
 
 nomove_frames = [0]
 

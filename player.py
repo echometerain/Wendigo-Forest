@@ -9,8 +9,11 @@ import entity
 
 
 class Player(entity.Entity):
+    hitbox: pg.Rect
+
     def __init__(self):
         super().__init__("player", 25, 5, c.PL_SPEED, [0, 0])
+        self.hitbox = pg.Rect(0, 0, 30, 65)
 
     def move(self, x, y):
         if x == 0 and y == 0:
@@ -28,3 +31,4 @@ class Player(entity.Entity):
             c.cam_pos[0] += move_vector[0]
             c.cam_pos[1] += move_vector[1]
         self.re_position()
+        self.hitbox.center = (self.rect.center[0], self.rect.center[1])

@@ -5,6 +5,7 @@
 ############################
 import config as c
 import pygame as pg
+import time
 import os
 import sys
 import random
@@ -32,6 +33,7 @@ s = os.sep
 pg.mixer.music.load(f"sounds{s}music{s}opening.mp3")
 pg.mixer.music.set_volume(0.5)
 mask = pg.mask.from_surface(gray)
+gun_time = time.time()
 
 
 def set_text(font, string, coordx, coordy):  # Function to set text
@@ -42,9 +44,15 @@ def set_text(font, string, coordx, coordy):  # Function to set text
 
 
 def next():  # updates frame
+    global gun_time
     pg.display.update()
-    c.clock.tick(100)
+    c.clock.tick(c.FPS)
     for event in pg.event.get():
+        temp_time = time.time()
+        if (event.type == pg.MOUSEBUTTONDOWN or event.type == pg.MOUSEBUTTONUP) \
+                and temp_time-gun_time > 1:
+            gun_time = temp_time
+            bullets.append(gun.Gun(pl.pos[0], pl.pos[1]))
         if event.type == pg.QUIT:
             pg.quit()
             sys.exit()
@@ -52,7 +60,7 @@ def next():  # updates frame
     pg.event.clear()
 
 
-img_title = c.image("logo")
+img_title = c.image("logo2")
 pg.mixer.music.play(-1)
 while True:
     keys = pg.key.get_pressed()
@@ -63,22 +71,6 @@ while True:
                    c.WIDTH/2 + 50, c.HEIGHT/2 + 200)
     c.screen.blit(txt[0], txt[1])
     next()
-
-
-def rmWd(w):
-    if w in sprites:
-        sprites.remove(w)
-    if w in wendigos:
-        wendigos.remove(w)
-    del w
-
-
-def rmNPC(e):
-    if e in sprites:
-        sprites.remove(e)
-    if e in npcs:
-        npcs.remove(e)
-    del e
 
 
 def keys():
@@ -96,18 +88,22 @@ def keys():
     pl.move(x, y)
 
 
-def draw():
+def logic():
+    global sprites
     global bullets
-    ground.draw()
-    c.screen.blit(gray, (0, 0))
-    sprites.sort(key=lambda x: x.pos[1], reverse=True)
-    ysort = pg.sprite.OrderedUpdates()
-    remove_queue = []
+    global wendigos
+    global npcs
+    ground.move()
     for e in bullets:
         e.move()
-    for e in sprites:
-        ysort.add(e)
-    ysort.draw(c.screen)
+        for n in npcs:
+            if n.rect.collidepoint(e.screen_pos[0], e.screen_pos[1]):
+                e.rm = True
+                n.rm = True
+        for w in wendigos:
+            if w.rect.collidepoint(e.screen_pos[0], e.screen_pos[1]):
+                e.rm = True
+                w.rm = True
     for i, e in enumerate(npcs):
         e.check_move(pl)
 
@@ -115,21 +111,41 @@ def draw():
         w.check_move(pl)
         for e in npcs:
             if w.rect.colliderect(e):
-                rmNPC(e)
-                # rmWd(w)
-                wd.run = True
+                e.rm = True
+                w.run = True
         if w.rect.colliderect(pl.rect):
             return True
 
     bullets = [x for x in bullets if not x.rm]
+    sprites = [x for x in sprites if not x.rm]
+    wendigos = [x for x in wendigos if not x.rm]
+    npcs = [x for x in npcs if not x.rm]
+    bullets = [x for x in bullets if not x.rm]
 
+
+def draw():
+    global sprites
+    global bullets
+    global wendigos
+    global npcs
+    ground.draw()
+    c.screen.blit(gray, (0, 0))
+    sprites.sort(key=lambda x: x.pos[1], reverse=True)
+    ysort = pg.sprite.OrderedUpdates()
+    for e in sprites:
+        ysort.add(e)
+    ysort.draw(c.screen)
+    for e in bullets:
+        pg.draw.line(c.screen, (255, 255, 0), (e.screen_pos[0], e.screen_pos[1]),
+                     (e.screen_pos[0]+e.vector[0], e.screen_pos[1]-e.vector[1]))
+    pg.draw.rect(c.screen, (255, 0, 0), pl.hitbox)
     c.screen.blit(black, (0, 0))
     cursor_rect.center = pg.mouse.get_pos()
     c.screen.blit(cursor, cursor_rect)
-    if len(bullets) > 0:
-        txt = set_text(
-            cali, bullets[len(bullets)-1].screen_pos.__str__(), 200, 100)
-        c.screen.blit(txt[0], txt[1])
+    # if len(bullets) > 0:
+    #     txt = set_text(
+    #         cali, bullets[len(bullets)-1].screen_pos.__str__(), 200, 100)
+    #     c.screen.blit(txt[0], txt[1])
     return False
 
 
@@ -152,20 +168,17 @@ def spawn():
 def main():
     while True:
         c.nomove_frames[0] += 1
-        if c.nomove_frames[0] >= 10:
+        if c.nomove_frames[0] >= 5:
             spawn()
             for e in npcs:
                 e.update()
             pl.update()
 
         keys()
-        ground.move()
-        ended = draw()
+        ended = logic()
         if ended:
             break
-        for event in pg.event.get():
-            if event.type == pg.MOUSEBUTTONDOWN:
-                bullets.append(gun.Gun(pl.pos[0], pl.pos[1]))
+        draw()
         next()
 
 
@@ -194,5 +207,7 @@ while True:
     c.cam_pos[1] = 0
     npcs = []
     wendigos = []
-    pl.pos = [0, 0]
+    pl.pos[0] = 0
+    pl.pos[1] = 0
+    pl.re_position()
     end()

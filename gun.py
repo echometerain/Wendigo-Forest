@@ -26,8 +26,9 @@ class Gun():
     def move(self):
         self.pos[0] += self.vector[0]
         self.pos[1] += self.vector[1]
-        if self.pos[0] > 1000 or self.pos[1] > 1000:
-            rm = True
+        if self.pos[0] > c.WIDTH//2 or self.pos[0] < -c.WIDTH//2 \
+                or self.pos[1] > c.HEIGHT//2 or self.pos[1] < -c.HEIGHT//2:
+            self.rm = True
         self.re_position()
 
     def re_position(self):

@@ -26,6 +26,9 @@ class Wendigo(entity.Entity):
             y = 1
         if self.run:
             self.move(-x, -y)
+            if self.pos[0] > c.WIDTH//2 or self.pos[0] < -c.WIDTH//2 \
+                    or self.pos[1] > c.HEIGHT//2 or self.pos[1] < -c.HEIGHT//2:
+                self.rm = True
         else:
             self.move(x, y)
         self.re_position()
