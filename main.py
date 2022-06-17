@@ -153,13 +153,13 @@ def spawn():
     if random.randint(1, 30) == 1:
         x = random.randint(-1, 1)
         y = random.randint(-1, 1)
-        t = npc.NPC([x*1000+c.cam_pos[0], y*1000+c.cam_pos[1]])
+        t = npc.NPC([x*c.WIDTH//2+c.cam_pos[0], y*c.HEIGHT//2+c.cam_pos[1]])
         npcs.append(t)
         sprites.append(t)
     if random.randint(1, 50) == 1:
         x = random.randint(-1, 1)
         y = random.randint(-1, 1)
-        t = wd.Wendigo([x*1000+c.cam_pos[0], y*1000+c.cam_pos[1]])
+        t = wd.Wendigo([x*c.WIDTH//2+c.cam_pos[0], y*c.HEIGHT//2+c.cam_pos[1]])
         sprites.append(t)
         wendigos.append(t)
     c.nomove_frames[0] = 0
