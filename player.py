@@ -9,6 +9,8 @@ import entity
 
 
 class Player(entity.Entity):
+    ammo_count = 3
+
     def __init__(self):
         super().__init__("player", 25, 5, c.PL_SPEED, [0, 0], 30, 65)
 

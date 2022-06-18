@@ -1,9 +1,12 @@
+import entity
 import pygame as pg
 import config as c
-import entity
+import random
 
 
 class NPC(entity.Entity):
+    has_ammo = True
+
     def __init__(self, pos):
         super().__init__("npc", 25, 5, c.NPC_SPEED, pos, 30, 65)
 
@@ -27,6 +30,9 @@ class NPC(entity.Entity):
             self.move(x, y)
             self.re_position()
         elif self.moving:
+            if self.has_ammo:
+                pl.ammo_count += random.randint(1, 3)
+                self.has_ammo = False
             self.moving = False
             self.anim_state[2] = 3
             self.update()

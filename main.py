@@ -50,9 +50,10 @@ def next():  # updates frame
     c.clock.tick(c.FPS)
     temp_time = time.time()
     for event in pg.event.get():
-        if event.type == pg.MOUSEBUTTONDOWN:
-            #gun_time = temp_time
+        if event.type == pg.MOUSEBUTTONDOWN and temp_time-gun_time > 0.5 and pl.ammo_count > 0:
+            gun_time = temp_time
             bullets.append(gun.Gun(pl.pos[0], pl.pos[1]))
+            pl.ammo_count -= 1
         if event.type == pg.QUIT:
             pg.quit()
             sys.exit()
@@ -110,7 +111,13 @@ def logic():
                 e.rm = True
                 w.rm = True
     for i, e in enumerate(npcs):
-        e.check_move(pl)
+        collide = False
+        for e2 in npcs[i+1:]:
+            if e.hitbox.colliderect(e2.hitbox):
+                collide = True
+                break
+        if not collide:
+            e.check_move(pl)
 
     for w in wendigos:
         w.check_move(pl)
@@ -149,10 +156,8 @@ def draw():
     c.screen.blit(black, (0, 0))
     cursor_rect.center = pg.mouse.get_pos()
     c.screen.blit(cursor, cursor_rect)
-    # if len(bullets) > 0:
-    #     txt = set_text(
-    #         cali, bullets[len(bullets)-1].screen_pos.__str__(), 200, 100)
-    #     c.screen.blit(txt[0], txt[1])
+    txt = set_text(font, str(pl.ammo_count), c.WIDTH//2-20, 75)
+    c.screen.blit(txt[0], txt[1])
     return False
 
 
@@ -163,7 +168,7 @@ def spawn():
         t = npc.NPC([x*c.WIDTH//2+c.cam_pos[0], y*c.HEIGHT//2+c.cam_pos[1]])
         npcs.append(t)
         sprites.append(t)
-    if random.randint(1, 50) == 1:
+    if random.randint(1, 60) == 1:
         x = random.randint(-1, 1)
         y = random.randint(-1, 1)
         t = wd.Wendigo([x*c.WIDTH//2+c.cam_pos[0], y*c.HEIGHT//2+c.cam_pos[1]])
@@ -174,15 +179,12 @@ def spawn():
 
 def main():
     while True:
-
         c.nomove_frames[0] += 1
         if c.nomove_frames[0] >= 5:
-            print(len(bullets))
             spawn()
             for e in npcs:
                 e.update()
             pl.update()
-
         keys()
         ended = logic()
         if ended:
@@ -220,4 +222,5 @@ while True:
     pl.pos[0] = 0
     pl.pos[1] = 0
     pl.re_position()
+    pl.ammo_count = 3
     end()

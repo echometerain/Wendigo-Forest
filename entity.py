@@ -10,7 +10,7 @@ import config as c
 class Entity(pg.sprite.Sprite):
     rm = False
     hitbox: pg.Rect
-    moving = False
+    moving = True
     dir_images = 0  # images per direction
     anim_state = [4, False, 3]  # turn #, flip, running frame (4 is idle)
     pos = [0, 0]
