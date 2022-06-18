@@ -1,4 +1,4 @@
-<img align="center" width="1120" height="295" src="sprites/logo.png">
+<img align="center" src="sprites/logo.png">
 
 game made with pygame
 
