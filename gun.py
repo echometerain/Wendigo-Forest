@@ -15,6 +15,7 @@ class Gun():
     vector = [0, 0]  # movement vector
 
     def __init__(self, pl_x, pl_y):
+        c.gun_sound.play()
         self.pos[0] = pl_x  # sets position to player position
         self.pos[1] = pl_y
         mouse_pos = pg.mouse.get_pos()

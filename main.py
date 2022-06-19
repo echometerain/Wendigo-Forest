@@ -6,7 +6,6 @@
 import config as c
 import pygame as pg
 import time
-import os
 import sys
 import remains
 import random
@@ -30,8 +29,6 @@ bullets = []
 font = pg.font.Font("MetalMacabre.ttf", 50)
 cali = pg.font.SysFont("calibri", 50)
 maroon = (128, 0, 0)
-s = os.sep  # linux use slashes, windows use backslashes
-pg.mixer.music.load(f"sounds{s}music{s}opening.mp3")
 pg.mixer.music.set_volume(0.5)
 gun_time = time.time()  # gun cooldown
 
@@ -63,7 +60,7 @@ def next():  # updates frame
 
 # start screen
 img_title = c.image("logo2")
-pg.mixer.music.play(-1)
+pg.mixer.music.play(-1, 0, 500)  # play on loop
 while True:
 
     keys = pg.key.get_pressed()
@@ -120,12 +117,20 @@ def logic():  # most of the game logic
         if not collide:
             e.check_move(pl)
 
-    for w in wendigos:  # wendigo move and kill
-        w.check_move(pl)
+    for i, w in enumerate(wendigos):  # wendigo move and kill
+        collide = False
+        for e2 in wendigos[i+1:]:  # wendigo-to-wendigo collision
+            if e.hitbox.colliderect(e2.hitbox):
+                collide = True
+                break
+        if not collide:
+            w.check_move(pl)
         for e in npcs:  # check kill npc
             if w.hitbox.colliderect(e.hitbox):
                 e.rm = True
                 w.run = True  # wendigo goes into "run away" mode
+                print(len(c.screams))
+                c.screams[random.randint(0, 5)].play()
         if w.hitbox.colliderect(pl.hitbox):
             return True  # check kill you
 
@@ -178,6 +183,7 @@ def spawn():
 
 
 def main():  # main game loop
+    c.pl_run.play(-1)
     while True:
         # animations only update at 10 fps instead of 50
         c.nomove_frames[0] += 1
@@ -193,6 +199,7 @@ def main():  # main game loop
             break
         draw()
         next()
+    c.pl_run.stop()
 
 
 def end():  # end screen

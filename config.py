@@ -5,6 +5,7 @@
 ############################
 import pygame as pg
 import math
+import os
 
 pg.init()  # starts pygame and functions
 pg.mixer.pre_init(44100, 16, 2, 4096)  # start sound
@@ -37,6 +38,21 @@ WD_SPEED = 14
 GUN_SPEED = 24
 
 nomove_frames = [0]
+
+s = os.sep  # linux use slashes, windows use backslashes
+pg.mixer.music.load(f"sounds{s}music{s}opening.ogg")
+pl_run = pg.mixer.Sound(f"sounds{s}sfx{s}player_run.ogg")
+gun_sound = pg.mixer.Sound(f"sounds{s}sfx{s}gun1.ogg")
+
+# obsolete run
+
+# run_sounds = []
+# for i in range(1, 4):
+#     run_sounds.append([pg.mixer.Sound(f"sounds{s}sfx{s}run{i}.ogg"), False])
+
+screams = []
+for i in range(1, 6):
+    screams.append(pg.mixer.Sound(f"sounds{s}sfx{s}scream{i}.ogg"))
 
 
 def image(file):  # imports images with alpha

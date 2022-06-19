@@ -19,7 +19,11 @@ class Player(entity.Entity):
             self.moving = False
             self.anim_state[2] = 3  # idle position
             self.update()  # update animation
+            c.pl_run.stop()
             return
+        if not self.moving:
+            c.pl_run.play()
+        self.moving = True
         move_vector = self.move_anim(x, y)
         self.pos[0] += move_vector[0]  # moves you
         self.pos[1] += move_vector[1]
