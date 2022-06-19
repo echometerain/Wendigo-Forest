@@ -11,22 +11,22 @@ import entity
 class Player(entity.Entity):
     ammo_count = 3
 
-    def __init__(self):
+    def __init__(self):  # constructor
         super().__init__("player", 25, 5, c.PL_SPEED, [0, 0], 30, 65)
 
     def move(self, x, y):
         if x == 0 and y == 0:
             self.moving = False
-            self.anim_state[2] = 3
-            self.update()
+            self.anim_state[2] = 3  # idle position
+            self.update()  # update animation
             return
         move_vector = self.move_anim(x, y)
-        self.pos[0] += move_vector[0]
+        self.pos[0] += move_vector[0]  # moves you
         self.pos[1] += move_vector[1]
         if (c.cam_pos[0]-self.pos[0]-move_vector[0])**2 \
                 + (c.cam_pos[1]-self.pos[1]-move_vector[1])**2 <= c.OFFSET_RAD**2:
+            # only changes your screen position when inside a radius
             self.re_position()
-        else:
+        else:  # camera follow you when outside radius
             c.cam_pos[0] += move_vector[0]
             c.cam_pos[1] += move_vector[1]
-        self.re_position()

@@ -1,3 +1,9 @@
+############################
+# Filename: npc.py
+# Desc: Manage npcs' action
+# Date created: 04/26/2022
+############################
+
 import entity
 import pygame as pg
 import config as c

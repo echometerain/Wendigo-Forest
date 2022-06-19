@@ -16,11 +16,11 @@ import wd
 import npc
 import gun
 
-black = c.image("black")
+black = c.image("black")  # non viewable area
 cursor = c.image("crosshair")
 cursor_rect = cursor.get_rect()
-gray = c.image("mask")
-ground.make()
+gray = c.image("mask")  # grey area
+ground.make()  # makes the infinitely generating ground
 pl = player.Player()
 sprites = [pl]
 npcs = []
@@ -30,11 +30,10 @@ bullets = []
 font = pg.font.Font("MetalMacabre.ttf", 50)
 cali = pg.font.SysFont("calibri", 50)
 maroon = (128, 0, 0)
-s = os.sep
+s = os.sep  # linux use slashes, windows use backslashes
 pg.mixer.music.load(f"sounds{s}music{s}opening.mp3")
 pg.mixer.music.set_volume(0.5)
-mask = pg.mask.from_surface(gray)
-gun_time = time.time()
+gun_time = time.time()  # gun cooldown
 
 
 def set_text(font, string, coordx, coordy):  # Function to set text
@@ -50,6 +49,7 @@ def next():  # updates frame
     c.clock.tick(c.FPS)
     temp_time = time.time()
     for event in pg.event.get():
+        # works best when here, still doesn't work sometimes somehow
         if event.type == pg.MOUSEBUTTONDOWN and temp_time-gun_time > 0.5 and pl.ammo_count > 0:
             gun_time = temp_time
             bullets.append(gun.Gun(pl.pos[0], pl.pos[1]))
@@ -61,6 +61,7 @@ def next():  # updates frame
     pg.event.clear()
 
 
+# start screen
 img_title = c.image("logo2")
 pg.mixer.music.play(-1)
 while True:
@@ -75,7 +76,7 @@ while True:
     next()
 
 
-def keys():
+def keys():  # interprets wasd player movement
     x = 0
     y = 0
     keys = pg.key.get_pressed()
@@ -90,27 +91,27 @@ def keys():
     pl.move(x, y)
 
 
-def logic():
-    global sprites
+def logic():  # most of the game logic
+    global sprites  # I just call global when it doesn't work
     global bullets
     global wendigos
     global npcs
     ground.move()
-    for e in carnage:
+    for e in carnage:  # moves the remains of entities
         e.re_position()
     for e in bullets:
-        e.move()
-        for n in npcs:
+        e.move()  # move bullet
+        for n in npcs:  # check bullet kill npc
             if n.hitbox.collidepoint(e.screen_pos[0], e.screen_pos[1]):
                 carnage.append(remains.Remains(n.pos[0], n.pos[1], "npc"))
                 e.rm = True
                 n.rm = True
-        for w in wendigos:
+        for w in wendigos:  # check bullet kill wendigo
             if w.hitbox.collidepoint(e.screen_pos[0], e.screen_pos[1]):
                 carnage.append(remains.Remains(w.pos[0], w.pos[1], "wd"))
                 e.rm = True
                 w.rm = True
-    for i, e in enumerate(npcs):
+    for i, e in enumerate(npcs):  # npc-to-npc collision and move
         collide = False
         for e2 in npcs[i+1:]:
             if e.hitbox.colliderect(e2.hitbox):
@@ -119,15 +120,17 @@ def logic():
         if not collide:
             e.check_move(pl)
 
-    for w in wendigos:
+    for w in wendigos:  # wendigo move and kill
         w.check_move(pl)
-        for e in npcs:
+        for e in npcs:  # check kill npc
             if w.hitbox.colliderect(e.hitbox):
                 e.rm = True
                 w.run = True
         if w.hitbox.colliderect(pl.hitbox):
-            return True
+            return True  # check kill you
 
+    # the dumbest memory manager
+    # guess it's not dumb if it works
     bullets = [x for x in bullets if not x.rm]
     sprites = [x for x in sprites if not x.rm]
     wendigos = [x for x in wendigos if not x.rm]
@@ -136,68 +139,66 @@ def logic():
 
 
 def draw():
-    global sprites
+    global sprites  # same
     global bullets
     global wendigos
     global npcs
     ground.draw()
-    for e in carnage:
+    for e in carnage:  # draws remains
         c.screen.blit(e.image, e.rect)
-    c.screen.blit(gray, (0, 0))
+    c.screen.blit(gray, (0, 0))  # draws gray area
     sprites.sort(key=lambda x: x.pos[1], reverse=True)
-    ysort = pg.sprite.OrderedUpdates()
+    ysort = pg.sprite.OrderedUpdates()  # sorts sprite draw order based on y-position
     for e in sprites:
         ysort.add(e)
-        # pg.draw.rect(c.screen, (255, 0, 0), e.hitbox)
-    ysort.draw(c.screen)
-    for e in bullets:
+    ysort.draw(c.screen)  # draw sprites
+    for e in bullets:  # draw bullets
         pg.draw.line(c.screen, (255, 255, 0), (e.screen_pos[0], e.screen_pos[1]),
                      (e.screen_pos[0]+e.vector[0], e.screen_pos[1]-e.vector[1]))
-    c.screen.blit(black, (0, 0))
+    c.screen.blit(black, (0, 0))  # draws non-viewable area
     cursor_rect.center = pg.mouse.get_pos()
-    c.screen.blit(cursor, cursor_rect)
+    c.screen.blit(cursor, cursor_rect)  # draws cursor
     txt = set_text(font, str(pl.ammo_count), c.WIDTH//2-20, 75)
-    c.screen.blit(txt[0], txt[1])
+    c.screen.blit(txt[0], txt[1])  # draw ammo amount
     return False
 
 
 def spawn():
-    if random.randint(1, 30) == 1:
+    if random.randint(1, 30) == 1:  # spawns every 3 seconds on average
         x = random.randint(-1, 1)
-        y = random.randint(-1, 1)
-        t = npc.NPC([x*c.WIDTH//2+c.cam_pos[0], y*c.HEIGHT//2+c.cam_pos[1]])
-        npcs.append(t)
+        y = random.randint(-1, 1)  # spawns it just outside the screen
+        pos = [x*c.WIDTH//2+c.cam_pos[0], y*c.HEIGHT//2+c.cam_pos[1]]
+        if random.randint(0, 2) == 1:  # I don't need to use == but uhhhh
+            t = wd.Wendigo(pos)
+            wendigos.append(t)
+        else:
+            t = npc.NPC(pos)
+            npcs.append(t)
         sprites.append(t)
-    if random.randint(1, 60) == 1:
-        x = random.randint(-1, 1)
-        y = random.randint(-1, 1)
-        t = wd.Wendigo([x*c.WIDTH//2+c.cam_pos[0], y*c.HEIGHT//2+c.cam_pos[1]])
-        sprites.append(t)
-        wendigos.append(t)
-    c.nomove_frames[0] = 0
 
 
-def main():
+def main():  # main game loop
     while True:
+        # animations only update at 10 fps instead of 50
         c.nomove_frames[0] += 1
         if c.nomove_frames[0] >= 5:
+            c.nomove_frames[0] = 0
             spawn()
-            for e in npcs:
+            for e in npcs:  # draws you and all the npcs
                 e.update()
             pl.update()
         keys()
-        ended = logic()
+        ended = logic()  # check whether you're dead
         if ended:
             break
         draw()
         next()
 
 
-def end():
+def end():  # end screen
     c.screen.fill((0, 0, 0))
     while True:
         keys = pg.key.get_pressed()
-        # anyKey()
         if keys[pg.K_SPACE]:
             break
 
@@ -211,8 +212,10 @@ def end():
         next()
 
 
-while True:
+while True:  # meta game loop
     main()
+
+    # resets the game state
     sprites = [pl]
     c.cam_pos[0] = 0
     c.cam_pos[1] = 0
@@ -223,4 +226,5 @@ while True:
     pl.pos[1] = 0
     pl.re_position()
     pl.ammo_count = 3
+
     end()
