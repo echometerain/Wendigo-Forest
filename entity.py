@@ -25,10 +25,10 @@ class Entity(pg.sprite.Sprite):
         self.spritesheet = c.image(sheet)
         self.rect = self.spritesheet.get_rect()
         self.sheetWidth = self.rect.width
-        self.numImages = numImages
+        self.numImages = numImages  # number of images in spritesheet
         self.rect.width = self.sheetWidth//numImages
         self.speed = speed
-        self.dir_images = dir_images
+        self.dir_images = dir_images  # number of images per direction
         self.diag_speed = int(speed/1.414)  # sqrt 2
         self.update()
         self.re_position()
@@ -53,7 +53,7 @@ class Entity(pg.sprite.Sprite):
         # hitbox is always centered
         self.hitbox.center = (self.rect.center[0], self.rect.center[1])
 
-    def move_anim(self, x, y):  # draws animation
+    def move_anim(self, x, y):  # draws animation and returns movement vector
         move = [0, 0]
         # sprite directions (anim_state[0])
         # 0. up
@@ -70,7 +70,7 @@ class Entity(pg.sprite.Sprite):
                 self.anim_state[0] = 1
             else:
                 self.anim_state[0] = 3
-            move[0] = x * self.diag_speed
+            move[0] = x * self.diag_speed  # diagonal movement vector
             move[1] = y * self.diag_speed
         else:
             if x != 0:
@@ -85,6 +85,6 @@ class Entity(pg.sprite.Sprite):
             else:
                 self.anim_state[1] = False
                 self.anim_state[0] = 4
-            move[0] = x * self.speed
+            move[0] = x * self.speed  # straight movement vector
             move[1] = y * self.speed
         return move

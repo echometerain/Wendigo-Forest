@@ -125,7 +125,7 @@ def logic():  # most of the game logic
         for e in npcs:  # check kill npc
             if w.hitbox.colliderect(e.hitbox):
                 e.rm = True
-                w.run = True
+                w.run = True  # wendigo goes into "run away" mode
         if w.hitbox.colliderect(pl.hitbox):
             return True  # check kill you
 

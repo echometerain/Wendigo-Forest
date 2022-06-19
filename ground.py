@@ -1,6 +1,6 @@
 ############################
 # Filename: ground.py
-# Desc: Generate ground tiles
+# Desc: Infinite ground tiles generation
 # Date created: 05/15/2022
 ############################
 import pygame as pg
@@ -12,13 +12,13 @@ tiles = []
 group = pg.sprite.Group()
 
 
-class Ground(pg.sprite.Sprite):
+class Ground(pg.sprite.Sprite):  # tile object
     def __init__(self, x, y):
         super().__init__()
 
         self.image = pg.image.load("sprites/ground_gray.png").convert()
         self.image = pg.transform.scale(self.image, (SIZE, SIZE))
-        self.rect = self.image.get_rect(bottomright=(x, y))
+        self.move_to(x, y)
 
     def move_to(self, x, y):
         self.rect = self.image.get_rect(bottomright=(x, y))
@@ -26,7 +26,7 @@ class Ground(pg.sprite.Sprite):
 
 def make():  # makes the tiles
     for i in range(cur_pos[0], c.WIDTH, SIZE):
-        tiles.append([])
+        tiles.append([])  # puts the ground objects into the tiles list
         for j in range(cur_pos[1], c.WIDTH, SIZE):
             tmp_ground = Ground(i, j)
             group.add(tmp_ground)
@@ -34,8 +34,10 @@ def make():  # makes the tiles
 
 
 def move():  # moves the tiles
-    cur_pos[0] = SIZE - c.cam_pos[0] % SIZE  # how the hell does this work
+    # get tiles' offset from the camera
+    cur_pos[0] = SIZE - c.cam_pos[0] % SIZE
     cur_pos[1] = c.cam_pos[1] % SIZE
+    # reassigns tiles when they go out of range
     for i in range(cur_pos[0]+SIZE, c.WIDTH, SIZE):
         for j in range(cur_pos[1], c.WIDTH, SIZE):
             tiles[(i-cur_pos[0]) // SIZE][(j-cur_pos[1]) // SIZE].move_to(i, j)
