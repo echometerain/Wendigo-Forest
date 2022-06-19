@@ -13,25 +13,6 @@ class Wendigo(entity.Entity):  # dedicated to wendigoon <3
     run = False  # "run away" mode activates after it eats someone
     run_index = -1
 
-    # obsolete sound check
-
-    # def sound_check(self, pl):
-    #     if self.run_index == -1:
-    #         for i, e in enumerate(c.run_sounds):
-    #             if not e[1]:
-    #                 self.run_index = i
-    #                 e[1] = True
-    #                 e[0].play(-1)  # play on loop
-    #     else:
-    #         c.run_sounds[self.run_index][0].set_volume(
-    #             1-(math.sqrt((self.pos[0]-pl.pos[0])**2 +
-    #                          (self.pos[1]-pl.pos[1])**2)+1)
-    #             / (c.WIDTH//2))
-
-    # def __del__(self):
-    #     c.run_sounds[self.run_index][0].stop()
-    #     c.run_sounds[self.run_index][1] = False
-
     def __init__(self, pos):
         super().__init__("wendigo", 25, 5, c.WD_SPEED, pos, 125, 50)
 

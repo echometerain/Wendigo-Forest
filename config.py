@@ -44,12 +44,6 @@ pg.mixer.music.load(f"sounds{s}music{s}opening.ogg")
 pl_run = pg.mixer.Sound(f"sounds{s}sfx{s}player_run.ogg")
 gun_sound = pg.mixer.Sound(f"sounds{s}sfx{s}gun1.ogg")
 
-# obsolete run
-
-# run_sounds = []
-# for i in range(1, 4):
-#     run_sounds.append([pg.mixer.Sound(f"sounds{s}sfx{s}run{i}.ogg"), False])
-
 screams = []
 for i in range(1, 6):
     screams.append(pg.mixer.Sound(f"sounds{s}sfx{s}scream{i}.ogg"))
