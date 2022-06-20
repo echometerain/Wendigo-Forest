@@ -130,7 +130,7 @@ def logic():  # most of the game logic
                 e.rm = True
                 w.run = True  # wendigo goes into "run away" mode
                 rand = random.randint(0, 5)
-                if rand > len(c.screams)-1:
+                if rand < len(c.screams):
                     c.screams[rand].play()
         if w.hitbox.colliderect(pl.hitbox):
             return True  # check kill you
