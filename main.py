@@ -120,7 +120,7 @@ def logic():  # most of the game logic
     for i, w in enumerate(wendigos):  # wendigo move and kill
         collide = False
         for e2 in wendigos[i+1:]:  # wendigo-to-wendigo collision
-            if e.hitbox.colliderect(e2.hitbox):
+            if w.hitbox.colliderect(e2.hitbox):
                 collide = True
                 break
         if not collide:
