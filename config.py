@@ -34,7 +34,7 @@ OFFSET_RAD = 100  # how far can the player go off-center **2
 NPC_CLOSE_RAD = 70  # how far the npc can go from the player **2
 PL_SPEED = 12  # pixels per frame
 NPC_SPEED = 10
-WD_SPEED = 14
+WD_SPEED = 13
 GUN_SPEED = 24
 
 nomove_frames = [0]
